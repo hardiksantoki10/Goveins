@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "48446476988",
+    "project_id": "goviens-c919b",
+    "storage_bucket": "goviens-c919b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:48446476988:android:b51155c8f3a138409176b9",
+        "android_client_info": {
+          "package_name": "com.goviens.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "48446476988-6ksma1ppa5doqre52pp3qjdn9q79l3b9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSEhkFXsMiPpJazxjJG0iH6nSMIK9sdNM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "48446476988-6ksma1ppa5doqre52pp3qjdn9q79l3b9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
