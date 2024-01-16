@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_default"
+        android:title="@string/make_default" />
+
+    <item
+        android:id="@+id/menu_dlt"
+        android:title="@string/delete" />
+
+</menu>

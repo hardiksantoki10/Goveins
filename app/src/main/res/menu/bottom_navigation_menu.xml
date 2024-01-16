@@ -1,0 +1,22 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/Rides"
+        android:enabled="true"
+        android:title="@string/rides"
+        android:icon="@drawable/rides_bottom"/>
+    <item
+        android:id="@+id/search"
+        android:enabled="true"
+        android:title="@string/search_hint"
+        android:icon="@drawable/search_bottom"/>
+    <item
+        android:id="@+id/offer"
+        android:enabled="true"
+        android:title="@string/drive"
+        android:icon="@drawable/offer_bottom"/>
+    <item
+        android:id="@+id/profile"
+        android:enabled="true"
+        android:title="@string/profile"
+        android:icon="@drawable/profile_bottom"/>
+</menu>

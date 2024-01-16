@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Track Driver"
+            android:textSize="18dp"
+            android:id="@+id/tv_amt"
+            android:textStyle="normal"
+            android:textColor="@color/colorBlack"
+            android:fontFamily="@font/poppins_medium"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="20 June 11:00"
+            android:textSize="14dp"
+            android:layout_marginStart="10dp"
+            android:textStyle="normal"
+            android:textColor="@color/colorLightGrey"
+            android:fontFamily="@font/poppins"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="20 June 11:00"
+        android:textSize="14dp"
+        android:layout_marginStart="20dp"
+        android:textStyle="normal"
+        android:textColor="@color/colorLightGrey"
+        android:fontFamily="@font/poppins_medium"/>
+</LinearLayout>

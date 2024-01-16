@@ -1,0 +1,460 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:geekui="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:context=".activities.ProfileActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="100dp"
+        android:id="@+id/scroll"
+        android:layout_below="@+id/linear">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <FrameLayout
+                android:layout_width="110dp"
+                android:layout_height="110dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/profile_img"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center|top"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/dummy_pic"
+                    geekui:civ_border_color="@color/colorLightGrey"
+                    geekui:civ_border_width="2dp" />
+
+            </FrameLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:text=""
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:id="@+id/tv_name"
+                android:textColor="@color/black"
+                android:fontFamily="@font/poppins_medium"/>
+
+            <androidx.appcompat.widget.AppCompatRatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/rating"
+                android:clickable="false"
+                android:layout_marginTop="5dp"
+                android:scaleX="0.6"
+                android:scaleY="0.6"
+                android:theme="@style/RatingBar"
+                android:layout_gravity="center"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="15dp"
+                android:background="@color/colorLightGrey" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:text="@string/phone_verified"
+                    android:layout_marginStart="40dp"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/quantum_grey500"
+                    android:fontFamily="@font/poppins_medium"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/check"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="60dp"
+                    android:id="@+id/img_message"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/blue_message"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:id="@+id/img_call"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/blue_call"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/relative_document"
+                android:layout_marginTop="10dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:text="@string/document_approved"
+                android:layout_marginStart="40dp"
+                android:layout_centerVertical="true"
+                android:textColor="@color/quantum_grey500"
+                android:fontFamily="@font/poppins_medium"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/check"/>
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="15dp"
+                android:background="@color/colorLightGrey" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:id="@+id/linear_ride_details"
+                android:layout_marginLeft="20dp"
+                android:visibility="visible"
+                android:layout_marginRight="20dp"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:text=""
+                        android:id="@+id/tv_dt"
+                        android:textColor="@color/colorBlack"
+                        android:fontFamily="@font/poppins_medium"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_alignParentEnd="true">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="16dp"
+                            android:text=""
+                            android:id="@+id/tv_seat"
+                            android:textColor="@color/quantum_grey500"
+                            android:fontFamily="@font/poppins_medium"/>
+
+                        <View
+                            android:layout_width="5dp"
+                            android:layout_height="5dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="10dp"
+                            android:background="@color/quantum_grey500" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="16dp"
+                            android:text=""
+                            android:id="@+id/tv_amt"
+                            android:textColor="@color/quantum_grey500"
+                            android:fontFamily="@font/poppins_medium"/>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp"
+                    android:weightSum="5"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:orientation="vertical"
+                        android:layout_weight="0.6"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:textSize="12dp"
+                            android:id="@+id/tv_start_time"
+                            android:textColor="@color/colorBlack"
+                            android:fontFamily="@font/poppins_medium"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text=""
+                            android:textSize="12dp"
+                            android:id="@+id/tv_end_time"
+                            android:layout_gravity="bottom"
+                            android:gravity="bottom"
+                            android:textColor="@color/colorBlack"
+                            android:fontFamily="@font/poppins_medium"/>
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:layout_weight="0.3"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:layout_width="15dp"
+                            android:src="@drawable/circle"
+                            android:layout_marginTop="15dp"
+                            android:layout_height="15dp" />
+
+                        <View
+                            android:layout_width="4dp"
+                            android:background="@color/colorRideDetail"
+                            android:id="@+id/vv_pickup_done"
+                            android:layout_height="match_parent"/>
+
+                        <ImageView
+                            android:layout_width="15dp"
+                            android:src="@drawable/circle"
+                            android:layout_marginBottom="15dp"
+                            android:layout_height="15dp" />
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4.1"
+                        android:layout_marginEnd="5dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:id="@+id/tv_from"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="13dp"
+                            android:layout_marginStart="10dp"
+                            android:fontFamily="@font/poppins" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/to"
+                            android:id="@+id/tv_to_txt"
+                            android:layout_centerHorizontal="true"
+                            android:layout_below="@+id/tv_from"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="15dp"
+                            android:layout_marginStart="50dp"
+                            android:fontFamily="@font/poppins_medium" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:id="@+id/tv_to"
+                            android:layout_below="@+id/tv_to_txt"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="13dp"
+                            android:layout_marginStart="10dp"
+                            android:fontFamily="@font/poppins" />
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@color/colorLightGrey" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:text="@string/online_payment"
+                    android:id="@+id/tv_payment_method"
+                    android:layout_marginTop="15dp"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/quantum_grey500"
+                    android:fontFamily="@font/poppins_medium"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@color/colorLightGrey" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:text="@string/mobile_number"
+                android:layout_marginTop="15dp"
+                android:layout_marginStart="40dp"
+                android:layout_centerVertical="true"
+                android:textColor="@color/quantum_grey500"
+                android:fontFamily="@font/poppins_medium"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:text=""
+                android:id="@+id/tv_phone"
+                android:layout_marginStart="40dp"
+                android:layout_centerVertical="true"
+                android:textColor="@color/black"
+                android:fontFamily="@font/poppins_medium"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="15dp"
+                android:background="@color/colorLightGrey" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:text="@string/total_rides"
+                android:id="@+id/total_rides_txt"
+                android:layout_marginStart="40dp"
+                android:layout_centerVertical="true"
+                android:textColor="@color/quantum_grey500"
+                android:fontFamily="@font/poppins_medium"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:text=""
+                android:layout_toRightOf="@+id/total_rides_txt"
+                android:layout_marginStart="10dp"
+                android:id="@+id/tv_total_rides"
+                android:layout_centerVertical="true"
+                android:textColor="@color/quantum_grey700"
+                android:fontFamily="@font/poppins_medium"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:text="@string/member_since"
+                    android:id="@+id/member_since_txt"
+                    android:layout_marginStart="40dp"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/quantum_grey500"
+                    android:fontFamily="@font/poppins_medium"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:text=""
+                    android:id="@+id/tv_member_since"
+                    android:layout_toRightOf="@+id/member_since_txt"
+                    android:layout_marginStart="10dp"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/quantum_grey700"
+                    android:fontFamily="@font/poppins_medium"/>
+            </RelativeLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="80dp"
+        android:id="@+id/view"
+        android:visibility="gone"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorLightGrey"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="2"
+        android:layout_marginTop="10dp"
+        android:visibility="gone"
+        android:layout_marginEnd="15dp"
+        android:id="@+id/linear_btn"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginBottom="15dp"
+        android:orientation="horizontal">
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:text="@string/reject"
+            android:textColor="@color/colorPrimary"
+            android:textAllCaps="false"
+            android:textSize="14dp"
+            android:id="@+id/btn_reject"
+            android:layout_marginEnd="5dp"
+            android:fontFamily="@font/poppins_medium"
+            android:background="@drawable/otp__et_bg"/>
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:text="@string/accept"
+            android:id="@+id/btn_accept"
+            android:layout_marginStart="5dp"
+            android:textColor="@color/colorWhite"
+            android:textAllCaps="false"
+            android:textSize="14dp"
+            android:fontFamily="@font/poppins_medium"
+            android:background="@drawable/bg_primary_color"/>
+    </LinearLayout>
+
+</RelativeLayout>

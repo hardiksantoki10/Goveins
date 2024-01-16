@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="vehicle"
+        android:background="@color/colorDarkGrey"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
+        android:paddingStart="30dp"
+        android:textColor="@color/colorWhite"
+        android:textSize="19dp"
+        android:visibility="visible"
+        android:id="@+id/tv_heading"
+        android:fontFamily="@font/poppins_medium"/>
+
+    <com.mindorks.placeholderview.PlaceHolderView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/placeHolderVehicleDoc"/>
+</LinearLayout>

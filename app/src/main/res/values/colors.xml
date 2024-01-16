@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#72464A</color>
+    <color name="colorPrimaryDark">#74242D</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorLightGrey">#ACABAC</color>
+    <color name="colorButtonBg">#74242D</color>
+    <color name="colorOTPText">#F05D5D</color>
+    <color name="colorExtraLightGrey">#EDF3F3F3</color>
+    <color name="colorWalletBalance">#657CEF</color>
+    <color name="colorHoldAmt">#D98626</color>
+    <color name="colorRideDetail">#7EABA7</color>
+    <color name="colorGreen">#CC71B83D</color>
+    <color name="colorPink">#D181E1</color>
+    <color name="colorDarkGrey">#32838FA4</color>
+    <color name="colorBlue">#4C60DE</color>
+    <color name="colorMustard">#CCDD9441</color>
+    <color name="colorSelectedGrey">#66F3F3F3</color>
+</resources>

@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activities.LocationSelectionActivity">
+
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#000000"
+        android:fitsSystemWindows="true">
+
+        <fragment
+            android:id="@+id/map_frag_main"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".TrialActivity" />
+
+        <ImageView
+            android:id="@+id/green_icon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/icon_pin"
+            android:layout_gravity="center"
+            android:layout_marginBottom="25dp"/>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:elevation="15dp">
+
+
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center|top"
+                android:background="@color/colorWhite"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:id="@+id/drop_point"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:background="@color/colorWhite"
+                            android:padding="5dp"
+                            android:tint="@color/colorDarkGrey"
+                            app:srcCompat="@drawable/search_bottom" />
+
+                        <TextView
+                            android:id="@+id/drop_address_txt"
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:layout_weight="1"
+                            android:layout_gravity="center"
+                            android:background="@color/colorWhite"
+                            android:focusable="true"
+                            android:gravity="center|left"
+                            android:hint="@string/search_hint"
+                            android:paddingLeft="5dp" />
+
+                </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/right_arrow"
+                android:layout_gravity="end|center"
+                android:id="@+id/fav_location"
+                android:visibility="gone"
+                android:layout_marginEnd="25dp"
+                android:layout_alignParentEnd="true"/>
+
+        </androidx.cardview.widget.CardView>
+
+
+        <RelativeLayout
+            android:id="@+id/bottom_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            app:cardCornerRadius="0dp"
+            android:layout_marginBottom="100dp"
+            android:visibility="visible"
+            android:background="@color/colorWhite"
+            tools:ignore="MissingPrefix">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/linear"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Pickup Points"
+                        android:textColor="@color/colorGreen"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="8dp"
+                        android:visibility="gone"/>
+
+
+                    <TextView
+                        android:id="@+id/pickup_point"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:layout_marginLeft="15dp"
+                        android:textSize="15dp"
+                        android:visibility="gone"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginTop="8dp"/>
+
+
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Drop off point"
+                        android:textColor="@color/colorGreen"
+                        android:layout_marginLeft="15dp"
+                        android:visibility="gone"
+                        android:layout_marginTop="8dp"/>
+
+
+                    <TextView
+                        android:id="@+id/drop_location"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:textSize="15dp"/>
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/drop_fav_image"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_gravity="center|end"
+                    android:src="@drawable/light_heart" />
+
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="60dp"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="8dp"/>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="15dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:text="@string/ok"
+        android:textColor="@color/colorWhite"
+        android:textAllCaps="false"
+        android:id="@+id/select_loaction"
+        android:gravity="center"
+        android:layout_gravity="bottom"
+        android:textSize="16dp"
+        android:fontFamily="@font/poppins_medium"
+        android:background="@drawable/btn_bg"/>
+</RelativeLayout>

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:weightSum="5"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_weight="0.3"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="15dp"
+                android:src="@drawable/circle"
+                android:layout_marginTop="15dp"
+                android:layout_height="15dp" />
+
+            <View
+                android:layout_width="4dp"
+                android:background="@color/colorRideDetail"
+                android:id="@+id/vv_pickup_done"
+                android:layout_height="match_parent"/>
+
+            <ImageView
+                android:layout_width="15dp"
+                android:src="@drawable/circle"
+                android:layout_marginBottom="15dp"
+                android:layout_height="15dp" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4.6"
+            android:layout_marginEnd="5dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:id="@+id/tv_from"
+                android:textColor="@color/colorBlack"
+                android:textSize="13dp"
+                android:layout_marginStart="10dp"
+                android:fontFamily="@font/poppins" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/to"
+                android:id="@+id/tv_to_txt"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/tv_from"
+                android:textColor="@color/colorBlack"
+                android:textSize="15dp"
+                android:layout_marginStart="50dp"
+                android:fontFamily="@font/poppins_medium" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="wwwwwwwwwwwwwwwwwwwwwwww"
+                android:id="@+id/tv_to"
+                android:layout_below="@+id/tv_to_txt"
+                android:textColor="@color/colorBlack"
+                android:textSize="13dp"
+                android:layout_marginStart="10dp"
+                android:fontFamily="@font/poppins" />
+
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="15dp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:textSize="16dp"
+            android:layout_centerVertical="true"
+            android:fontFamily="@font/poppins_medium"
+            android:textColor="@color/quantum_grey500"
+            android:text="@string/goviens_proposed_price"/>
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="6dp"
+            android:minWidth="70dp"
+            android:gravity="center"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="20dp"
+            android:fontFamily="@font/poppins_medium"
+            android:id="@+id/tv_amt"
+            android:editable="false"
+            android:enabled="false"
+            android:background="@null"
+            android:layout_gravity="center_vertical"
+            android:text=""/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="5dp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:textSize="16dp"
+            android:layout_centerVertical="true"
+            android:fontFamily="@font/poppins_medium"
+            android:textColor="@color/quantum_grey500"
+            android:text="@string/your_price"/>
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="6dp"
+            android:minWidth="70dp"
+            android:gravity="center"
+            android:inputType="numberDecimal"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="20dp"
+            android:fontFamily="@font/poppins_medium"
+            android:id="@+id/tv_updated_amt"
+            android:background="@drawable/white_bg_corner"
+            android:layout_gravity="center_vertical"
+            android:text=""/>
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="15dp"
+        android:background="@color/colorDarkGrey"/>
+
+</LinearLayout>

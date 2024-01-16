@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activities.UploadDocumentActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/linear"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/back_arrow"
+            android:id="@+id/img_back"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="25dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="15dp"
+            android:fontFamily=""
+            android:text="@string/upload_documennt"
+            android:textColor="@color/colorWhite"
+            android:textSize="16dp"
+            app:fontFamily="@font/poppins" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/quantum_grey500"
+        android:textSize="18dp"
+        android:id="@+id/tv_upload_message"
+        android:visibility="gone"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="@font/poppins_medium"
+        android:text="@string/please_upload_vehicle_before_documents"
+        android:layout_centerInParent="true"/>
+
+    <com.mindorks.placeholderview.PlaceHolderView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/linear"
+        android:layout_marginBottom="70dp"
+        android:id="@+id/placeHolderDocument"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="15dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:text="@string/submit"
+        android:textColor="@color/colorWhite"
+        android:textAllCaps="false"
+        android:id="@+id/btnSubmit"
+        android:gravity="center"
+        android:layout_gravity="bottom"
+        android:textSize="16dp"
+        android:fontFamily="@font/poppins_medium"
+        android:background="@drawable/btn_bg"/>
+
+
+</RelativeLayout>

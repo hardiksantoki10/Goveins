@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/otp__et_bg"
+    android:id="@+id/root"
+    android:layout_margin="10dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:textColor="@color/colorBlack"
+        android:fontFamily="@font/poppins_medium"
+        android:textSize="14dp"
+        android:textStyle="italic"
+        android:id="@+id/tv_ride_id"
+        android:paddingRight="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="15dp"
+        android:text="#1234"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="5dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/dummy_pic"
+            android:id="@+id/img_profile"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="10dp"
+            android:layout_toRightOf="@id/img_profile">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:textColor="@color/quantum_grey"
+                android:text="ABC"
+                android:id="@+id/tv_name"
+                android:fontFamily="@font/poppins_medium" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/star"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12dp"
+                    android:textColor="@color/quantum_grey"
+                    android:text="4.0"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:id="@+id/tv_rating"
+                    android:fontFamily="@font/poppins_medium"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="5dp"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:id="@+id/img_female"
+                    android:layout_gravity="center"
+                    android:src="@drawable/female"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:id="@+id/img_ac"
+                    android:layout_marginStart="5dp"
+                    android:src="@drawable/ac_car"/>
+            </LinearLayout>
+        </LinearLayout>
+
+
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="end">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14dp"
+                    android:id="@+id/tv_amt"
+                    android:fontFamily="@font/poppins_medium"
+                    android:textColor="@color/black"
+                    android:text="200"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="15dp"
+                    android:textSize="10dp"
+                    android:layout_marginStart="5dp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:textColor="@color/black"
+                    android:text="@string/per_seat"/>
+            </LinearLayout>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_marginEnd="15dp"
+                android:textSize="13dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:id="@+id/btn_status_wait"
+                android:background="@color/quantum_orange400"
+                android:fontFamily="@font/poppins"
+                android:textColor="@color/white"
+                android:text="@string/awaiting_confirmation"
+                android:textAllCaps="false"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_marginEnd="15dp"
+                android:textSize="13dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:id="@+id/btn_status_confirm"
+                android:background="@color/quantum_googgreen400"
+                android:fontFamily="@font/poppins"
+                android:visibility="gone"
+                android:layout_gravity="end"
+                android:textColor="@color/white"
+                android:text="@string/confirmed"
+                android:textAllCaps="false"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorDarkGrey"
+        android:layout_marginTop="4dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="5"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingLeft="5dp"
+        android:paddingEnd="5dp"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorBlack"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="14dp"
+                android:id="@+id/tv_from_time"
+                android:layout_marginStart="5dp"
+                android:text="11:00"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:textColor="@color/colorBlack"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="14dp"
+                android:id="@+id/tv_to_time"
+                android:layout_marginStart="5dp"
+                android:text="11:00"/>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_marginStart="5dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.3"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="15dp"
+                android:src="@drawable/circle"
+                android:layout_marginTop="22dp"
+                android:layout_height="15dp" />
+
+            <View
+                android:layout_width="4dp"
+                android:background="@color/colorRideDetail"
+                android:id="@+id/vv_pickup_done"
+                android:layout_height="wrap_content"/>
+
+            <ImageView
+                android:layout_width="15dp"
+                android:src="@drawable/circle"
+                android:layout_marginBottom="22dp"
+                android:layout_height="15dp" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4.6"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="5dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Spaze i tech park, 48, gurugram"
+                android:id="@+id/tv_from"
+                android:textColor="@color/colorBlack"
+                android:textSize="13dp"
+                android:layout_marginStart="10dp"
+                android:fontFamily="@font/poppins" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/to"
+                android:id="@+id/tv_to_txt"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/tv_from"
+                android:textColor="@color/colorBlack"
+                android:textSize="14dp"
+                android:layout_marginStart="50dp"
+                android:fontFamily="@font/poppins_medium" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Spaze i tech park, 48, gurugram"
+                android:id="@+id/tv_to"
+                android:layout_below="@+id/tv_to_txt"
+                android:textColor="@color/colorBlack"
+                android:textSize="13dp"
+                android:layout_marginStart="10dp"
+                android:fontFamily="@font/poppins" />
+
+
+        </RelativeLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorDarkGrey"
+        android:layout_marginTop="4dp"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:textColor="@color/black"
+            android:text="20 May"
+            android:id="@+id/tv_date"
+            android:fontFamily="@font/poppins_medium"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:visibility="gone"
+            android:layout_centerVertical="true"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:fontFamily="@font/poppins_medium"
+                android:textColor="@color/quantum_orange400"
+                android:text="OTP : "/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:textSize="14dp"
+                android:id="@+id/tv_otp"
+                android:fontFamily="@font/poppins_medium"
+                android:textColor="@color/quantum_orange400"
+                android:text="2345"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>

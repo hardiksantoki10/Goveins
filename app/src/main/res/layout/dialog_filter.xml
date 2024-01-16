@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:layout_gravity="center"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="20dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="@color/white"
+        android:paddingBottom="20dp"
+        android:layout_centerInParent="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/radius"
+            android:textColor="@color/colorButtonBg"
+            android:textSize="18dp"
+            android:fontFamily="@font/poppins_medium"
+            android:layout_marginLeft="25dp"/>
+
+        <com.mohammedalaa.seekbar.RangeSeekBarView
+            android:id="@+id/range_seekbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:barHeight="15dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginTop="15dp"
+            app:baseColor="@color/quantum_grey500"
+            app:circleFillColor="@color/colorButtonBg"
+            app:circleRadius="15dp"
+            app:circleTextColor="@color/white"
+            app:circleTextSize="@dimen/value_bar_circleTextSize"
+            app:currentValue="1"
+            app:fillColor="@color/colorButtonBg"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:maxValue="10"
+            app:minValue="1"
+            app:orientation="LEFT_TO_RIGHT"
+            app:stepValue="1" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:text="@string/cancel"
+                android:id="@+id/btn_cancel"
+                android:textColor="@color/colorPrimary"
+                android:layout_marginEnd="5dp"
+                android:background="@drawable/otp__et_bg"
+                android:textAllCaps="false"
+                android:layout_weight="1"/>
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="25dp"
+                android:layout_marginStart="5dp"
+                android:textColor="@color/white"
+                android:id="@+id/btn_apply"
+                android:background="@drawable/bg_primary_color"
+                android:textAllCaps="false"
+                android:text="@string/apply"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</RelativeLayout>

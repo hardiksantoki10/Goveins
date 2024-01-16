@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:text="$20000"
+        android:textSize="18dp"
+        android:id="@+id/tv_amt"
+        android:textStyle="normal"
+        android:textColor="@color/colorBlack"
+        android:fontFamily="@font/poppins_medium"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="20dp"
+        android:text="Using Paypal"
+        android:textSize="17dp"
+        android:layout_alignParentEnd="true"
+        android:textStyle="normal"
+        android:fontFamily="@font/poppins_medium"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:text="May 15, 2020 07:00"
+        android:textSize="17dp"
+        android:textStyle="normal"
+        android:id="@+id/tv_dt_time"
+        android:layout_below="@+id/tv_amt"
+        android:fontFamily="@font/poppins_medium"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_below="@+id/tv_dt_time"
+        android:background="@color/colorLightGrey" />
+
+</RelativeLayout>
