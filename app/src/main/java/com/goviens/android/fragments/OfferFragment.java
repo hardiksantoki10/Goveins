@@ -74,7 +74,6 @@ import java.util.List;
 import java.util.Locale;
 
 
-import butterknife.ButterKnife;
 
 
 public class OfferFragment extends Fragment implements OnMapReadyCallback, ApiManager.APIFETCHER {
@@ -197,7 +196,6 @@ public class OfferFragment extends Fragment implements OnMapReadyCallback, ApiMa
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_offer, container, false);
-        ButterKnife.bind(this, rootView);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
         manager = new SessionManager(getActivity());
         apiManager = new ApiManager(this, getActivity());

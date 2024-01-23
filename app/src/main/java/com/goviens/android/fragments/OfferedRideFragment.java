@@ -28,7 +28,6 @@ import com.mindorks.placeholderview.annotations.Layout;
 import com.mindorks.placeholderview.annotations.Resolve;
 
 
-import butterknife.ButterKnife;
 
 public class OfferedRideFragment extends Fragment implements ApiManager.APIFETCHER {
 
@@ -75,7 +74,6 @@ public class OfferedRideFragment extends Fragment implements ApiManager.APIFETCH
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_offered_ride, container, false);
-        ButterKnife.bind(this, rootView);
         manager = new SessionManager(getActivity());
         apiManager = new ApiManager(this,getActivity());
         progressDialog = new ProgressDialog(getActivity());

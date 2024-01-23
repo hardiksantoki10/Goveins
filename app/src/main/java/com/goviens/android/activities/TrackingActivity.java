@@ -33,6 +33,8 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.goviens.android.R;
+import com.goviens.android.databinding.ActivitySignUpBinding;
+import com.goviens.android.databinding.ActivityTrackingBinding;
 import com.goviens.android.models.ModelReceiptDriver;
 import com.goviens.android.models.ModelRideOTP;
 import com.goviens.android.models.ModelTracking;
@@ -50,19 +52,13 @@ import com.mindorks.placeholderview.annotations.View;
 import java.util.HashMap;
 
 
-import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class TrackingActivity extends AppCompatActivity implements ApiManager.APIFETCHER, TextWatcher {
 
 
-    TextView tvFrom;
-    TextView tvTo;
-    Button btnNavigation;
     PlaceHolderView placeHolderRiders;
-    Button btnReached;
     SwipeRefreshLayout swipeRefreshLayout;
-    ImageView imgBack;
 
     boolean rating = false;
 
@@ -82,21 +78,25 @@ public class TrackingActivity extends AppCompatActivity implements ApiManager.AP
     String[] PERMISSIONS = {Manifest.permission.CALL_PHONE};
 
     PlaceHolderView placeholder_cancel_reason;
-    RadioButton radioOther;
-    EditText etOtherReason;
     Integer position = 0;
 
     String cancelReasonId = "null";
 
 
-    EditText etOTPfirst,etOTPsecond,etOTPthird,etOTPfourth;
+    ActivityTrackingBinding binding;
+
+    EditText etOTPfirst, etOTPsecond, etOTPthird, etOTPfourth;
+    RadioButton radioOther;
+    EditText etOtherReason;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tracking);
-        ButterKnife.bind(this);
-        manager = new ApiManager(this,this);
+
+        binding = ActivityTrackingBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        manager = new ApiManager(this, this);
         sessionManager = new SessionManager(this);
         progressDialog = new ProgressDialog(this);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -110,42 +110,42 @@ public class TrackingActivity extends AppCompatActivity implements ApiManager.AP
                 callRidersApi();
             }
         });
-        imgBack.setOnClickListener(new android.view.View.OnClickListener() {
+        binding.imgBack.setOnClickListener(new android.view.View.OnClickListener() {
             @Override
             public void onClick(android.view.View v) {
                 finish();
             }
         });
-        btnReached.setOnClickListener(new android.view.View.OnClickListener() {
+        binding.btnReached.setOnClickListener(new android.view.View.OnClickListener() {
             @Override
             public void onClick(android.view.View v) {
-                    for (int i = 0; i < tracking.getData().getActive_User_Ride().getPickup_users().size(); i++) {
-                        if(rideEnd) {
-                            if (tracking.getData().getActive_User_Ride().getPickup_users().get(i).getRide_status().equals("1")
-                                    || tracking.getData().getActive_User_Ride().getPickup_users().get(i).getRide_status().equals("2")
-                                    || tracking.getData().getActive_User_Ride().getPickup_users().get(i).getRide_status().equals("3")) {
-                                rideEnd = false;
-                            } else {
-                                rideEnd = true;
-                            }
+                for (int i = 0; i < tracking.getData().getActive_User_Ride().getPickup_users().size(); i++) {
+                    if (rideEnd) {
+                        if (tracking.getData().getActive_User_Ride().getPickup_users().get(i).getRide_status().equals("1")
+                                || tracking.getData().getActive_User_Ride().getPickup_users().get(i).getRide_status().equals("2")
+                                || tracking.getData().getActive_User_Ride().getPickup_users().get(i).getRide_status().equals("3")) {
+                            rideEnd = false;
+                        } else {
+                            rideEnd = true;
                         }
                     }
-                if(!rideEnd){
+                }
+                if (!rideEnd) {
                     Toast.makeText(TrackingActivity.this, getResources().getString(R.string.end_ride_of_all_riders), Toast.LENGTH_SHORT).show();
-                }else {
+                } else {
                     if (checkPermission())
                         onLocationPermissionGranted();
                 }
             }
         });
 
-        btnNavigation.setOnClickListener(new android.view.View.OnClickListener() {
+        binding.btnNavigation.setOnClickListener(new android.view.View.OnClickListener() {
             @Override
             public void onClick(android.view.View v) {
                 Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
                         Uri.parse("http://maps.google.com/maps?daddr="
-                                +tracking.getData().getActive_User_Ride().getRide_details_list().get(1).getTo_latitude()
-                                +","+tracking.getData().getActive_User_Ride().getRide_details_list().get(1).getTo_longitude()));
+                                + tracking.getData().getActive_User_Ride().getRide_details_list().get(1).getTo_latitude()
+                                + "," + tracking.getData().getActive_User_Ride().getRide_details_list().get(1).getTo_longitude()));
                 startActivity(intent);
             }
         });
@@ -170,16 +170,16 @@ public class TrackingActivity extends AppCompatActivity implements ApiManager.AP
                     @Override
                     public void onSuccess(Location location) {
                         if (location != null) {
-                            try{
+                            try {
                                 placeHolderRiders.removeAllViews();
                                 progressDialog.show();
-                                HashMap<String,String> map = new HashMap<>();
-                                map.put("latitude",""+location.getLatitude());
-                                map.put("longitude",""+location.getLongitude());
+                                HashMap<String, String> map = new HashMap<>();
+                                map.put("latitude", "" + location.getLatitude());
+                                map.put("longitude", "" + location.getLongitude());
                                 //map.put("user_id",""+rideDetails.getData().getOffer_user().getId());
                                 map.put("ride_id", getIntent().getStringExtra("ride_id"));
                                 manager._post(API_S.Tags.END_RIDE, API_S.Endpoints.END_RIDE, map, sessionManager);
-                            }catch (Exception e){
+                            } catch (Exception e) {
                                 e.printStackTrace();
                                 progressDialog.hide();
                             }
@@ -189,19 +189,19 @@ public class TrackingActivity extends AppCompatActivity implements ApiManager.AP
     }
 
 
-
-    void setData(){
+    void setData() {
         try {
-            tvFrom.setText(tracking.getData().getActive_User_Ride().getRide_details_list().get(0).getFrom_location());
-            tvTo.setText(tracking.getData().getActive_User_Ride().getRide_details_list().get(1).getTo_location());
+            binding.tvFrom.setText(tracking.getData().getActive_User_Ride().getRide_details_list().get(0).getFrom_location());
+            binding.tvTo.setText(tracking.getData().getActive_User_Ride().getRide_details_list().get(1).getTo_location());
             for (int i = 0; i < tracking.getData().getActive_User_Ride().getPickup_users().size(); i++) {
                 placeHolderRiders.addView(new HolderRiders(tracking.getData().getActive_User_Ride().getPickup_users().get(i)));
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
         }
     }
+
     @Override
     public void onAPIRunningState(int a, String APINAME) {
         try {
@@ -216,16 +216,16 @@ public class TrackingActivity extends AppCompatActivity implements ApiManager.AP
     }
 
 
-    void callRidersApi(){
-        try{
+    void callRidersApi() {
+        try {
             rideEnd = true;
             placeHolderRiders.removeAllViews();
             progressDialog.show();
-            HashMap<String,String> map = new HashMap<>();
+            HashMap<String, String> map = new HashMap<>();
             //map.put("user_id",""+rideDetails.getData().getOffer_user().getId());
             map.put("ride_id", getIntent().getStringExtra("ride_id"));
             manager._post(API_S.Tags.RIDERS_PICK_DROP, API_S.Endpoints.RIDERS_PICK_DROP, map, sessionManager);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             progressDialog.hide();
         }
@@ -249,7 +249,7 @@ public class TrackingActivity extends AppCompatActivity implements ApiManager.AP
                     ModelRideOTP rideOTP = SingletonGson.getInstance().fromJson("" + script, ModelRideOTP.class);
                     Toast.makeText(this, rideOTP.getMessage(), Toast.LENGTH_SHORT).show();
                     callRidersApi();
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                     progressDialog.hide();
                     Toast.makeText(this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
@@ -257,12 +257,12 @@ public class TrackingActivity extends AppCompatActivity implements ApiManager.AP
                 break;
             case API_S.Tags.ONGOING_RIDE_CANCEL:
                 try {
-                    if(progressDialog.isShowing()) {
+                    if (progressDialog.isShowing()) {
                         progressDialog.hide();
                     }
                     callRidersApi();
-                }catch (Exception e){
-                    if(progressDialog.isShowing()) {
+                } catch (Exception e) {
+                    if (progressDialog.isShowing()) {
                         progressDialog.hide();
                     }
                     e.printStackTrace();
@@ -275,19 +275,19 @@ public class TrackingActivity extends AppCompatActivity implements ApiManager.AP
                         progressDialog.hide();
                     }
                     openDialogForRating(view, 0);
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                     progressDialog.hide();
                     Toast.makeText(this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                 }
                 break;
-            case  API_S.Tags.RATING_USER:
+            case API_S.Tags.RATING_USER:
                 try {
                     if (progressDialog.isShowing()) {
                         progressDialog.hide();
                     }
                     callRidersApi();
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                     progressDialog.hide();
                     Toast.makeText(this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
@@ -302,24 +302,24 @@ public class TrackingActivity extends AppCompatActivity implements ApiManager.AP
                     HashMap<String, String> map = new HashMap<>();
                     map.put("ride_id", "" + getIntent().getStringExtra("ride_id"));
                     manager._post(API_S.Tags.RECEIPT_DRIVER, API_S.Endpoints.RECEIPT_DRIVER, map, sessionManager);
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                     progressDialog.hide();
                     Toast.makeText(this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                 }
                 break;
-            case  API_S.Tags.RECEIPT_DRIVER:
+            case API_S.Tags.RECEIPT_DRIVER:
                 try {
                     receiptUser = SingletonGson.getInstance().fromJson("" + script, ModelReceiptDriver.class);
                     if (progressDialog.isShowing()) {
                         progressDialog.hide();
                     }
                     startActivity(new Intent(TrackingActivity.this, ReceiptActivity.class)
-                            .putExtra("script", ""+script)
-                            .putExtra("user_receipt","0"));
+                            .putExtra("script", "" + script)
+                            .putExtra("user_receipt", "0"));
                     finish();
                     //openDialogForRating(view, 1);
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 break;
@@ -328,14 +328,14 @@ public class TrackingActivity extends AppCompatActivity implements ApiManager.AP
 
     @Override
     public void onFetchResultZero(String script, String APINAME) {
-        if(progressDialog.isShowing()) {
+        if (progressDialog.isShowing()) {
             progressDialog.hide();
         }
         Toast.makeText(this, script, Toast.LENGTH_SHORT).show();
     }
 
 
-    void openDialogForRating(android.view.View v, int from){
+    void openDialogForRating(android.view.View v, int from) {
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(TrackingActivity.this);
         ViewGroup viewGroup = findViewById(android.R.id.content);
         android.view.View dialogView = LayoutInflater.from(v.getContext()).inflate(R.layout.dialog_rating, viewGroup, false);
@@ -348,16 +348,16 @@ public class TrackingActivity extends AppCompatActivity implements ApiManager.AP
         LinearLayout linearReceipt = dialogView.findViewById(R.id.linear_receipt);
         LinearLayout linearRating = dialogView.findViewById(R.id.linear_rating);
         PlaceHolderView placeHolderView = dialogView.findViewById(R.id.placeHolder_receipt);
-        if(from == 0){
+        if (from == 0) {
             linearReceipt.setVisibility(android.view.View.GONE);
             linearRating.setVisibility(android.view.View.VISIBLE);
-        }else {
+        } else {
             linearReceipt.setVisibility(android.view.View.VISIBLE);
             linearRating.setVisibility(android.view.View.GONE);
-            for(int i=0;i<receiptUser.getData().getDriver_Receipt().getBody().getRide_details().size(); i++){
+            for (int i = 0; i < receiptUser.getData().getDriver_Receipt().getBody().getRide_details().size(); i++) {
                 placeHolderView.addView(new HolderReceipt(receiptUser.getData().getDriver_Receipt().getBody().getRide_details().get(i)));
             }
-            for(int i=0;i<receiptUser.getData().getDriver_Receipt().getBody().getBill_details().size(); i++){
+            for (int i = 0; i < receiptUser.getData().getDriver_Receipt().getBody().getBill_details().size(); i++) {
                 placeHolderView.addView(new HolderReceiptBill(receiptUser.getData().getDriver_Receipt().getBody().getBill_details().get(i)));
             }
             placeHolderView.addView(new HolderFooter(receiptUser.getData().getDriver_Receipt().getFooter()));
@@ -367,7 +367,7 @@ public class TrackingActivity extends AppCompatActivity implements ApiManager.AP
             @Override
             public void onClick(android.view.View v) {
                 Toast.makeText(TrackingActivity.this, getResources().getString(R.string.ride_completed), Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(TrackingActivity.this,MainActivity.class)
+                startActivity(new Intent(TrackingActivity.this, MainActivity.class)
                         .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                         .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                         .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
@@ -402,7 +402,7 @@ public class TrackingActivity extends AppCompatActivity implements ApiManager.AP
     }
 
 
-    void openDialogForOTP(android.view.View v, String userId){
+    void openDialogForOTP(android.view.View v, String userId) {
         AlertDialog.Builder builder = new AlertDialog.Builder(TrackingActivity.this);
         ViewGroup viewGroup = findViewById(android.R.id.content);
         android.view.View dialogView = LayoutInflater.from(v.getContext()).inflate(R.layout.dialog_otp, viewGroup, false);
@@ -420,19 +420,19 @@ public class TrackingActivity extends AppCompatActivity implements ApiManager.AP
         btnApply.setOnClickListener(new android.view.View.OnClickListener() {
             @Override
             public void onClick(android.view.View view) {
-                if(etOTPfirst.getText().toString().equals("") || etOTPsecond.getText().toString().equals("")
-                        || etOTPthird.getText().toString().equals("") || etOTPfourth.getText().toString().equals("")){
+                if (etOTPfirst.getText().toString().equals("") || etOTPsecond.getText().toString().equals("")
+                        || etOTPthird.getText().toString().equals("") || etOTPfourth.getText().toString().equals("")) {
                     Toast.makeText(TrackingActivity.this, getResources().getString(R.string.enter_correct_otp), Toast.LENGTH_SHORT).show();
-                }else {
-                    try{
+                } else {
+                    try {
                         progressDialog.show();
-                        HashMap<String,String> map = new HashMap<>();
-                        map.put("user_ride_id",userId);
-                       // map.put("ride_id",""+tracking.getData().getRide_details().get(0).getId());
-                        map.put("otp",etOTPfirst.getText().toString() + etOTPsecond.getText().toString() + etOTPthird.getText().toString() + etOTPfourth.getText().toString());
-                        manager._post(API_S.Tags.RIDE_OTP,API_S.Endpoints.RIDE_OTP,map,sessionManager);
+                        HashMap<String, String> map = new HashMap<>();
+                        map.put("user_ride_id", userId);
+                        // map.put("ride_id",""+tracking.getData().getRide_details().get(0).getId());
+                        map.put("otp", etOTPfirst.getText().toString() + etOTPsecond.getText().toString() + etOTPthird.getText().toString() + etOTPfourth.getText().toString());
+                        manager._post(API_S.Tags.RIDE_OTP, API_S.Endpoints.RIDE_OTP, map, sessionManager);
                         alertDialog.dismiss();
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                         Toast.makeText(TrackingActivity.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                         alertDialog.dismiss();
@@ -603,10 +603,10 @@ public class TrackingActivity extends AppCompatActivity implements ApiManager.AP
                     public void onClick(android.view.View v) {
                         PopupMenu popup = new PopupMenu(TrackingActivity.this, tvOptions);
                         //inflating menu from xml resource
-                        if(userDataBean.getRide_status().equals("1")
+                        if (userDataBean.getRide_status().equals("1")
                                 || userDataBean.getRide_status().equals("2")) {
                             popup.inflate(R.menu.menu_tracking_cancel);
-                        }else {
+                        } else {
                             popup.inflate(R.menu.menu_tracking);
                         }
                         //adding click listener
@@ -657,10 +657,10 @@ public class TrackingActivity extends AppCompatActivity implements ApiManager.AP
 //                                            }
 //                                        });
 //                                        builderSingle.show();
-                                        if(userDataBean.getRide_status().equals("1")
+                                        if (userDataBean.getRide_status().equals("1")
                                                 || userDataBean.getRide_status().equals("2")) {
                                             openDialogForCancel(v, mPos);
-                                        }else {
+                                        } else {
                                             Toast.makeText(TrackingActivity.this, "You can not cancel ride, If it is started.", Toast.LENGTH_SHORT).show();
                                         }
                                         break;
@@ -709,12 +709,12 @@ public class TrackingActivity extends AppCompatActivity implements ApiManager.AP
                             Toast.makeText(TrackingActivity.this, getResources().getString(R.string.please_specify_reason), Toast.LENGTH_SHORT).show();
                         } else {
                             try {
-                                Long tsLong = System.currentTimeMillis()/1000;
+                                Long tsLong = System.currentTimeMillis() / 1000;
                                 String ts = tsLong.toString();
                                 progressDialog.show();
                                 HashMap<String, String> map = new HashMap<>();
                                 map.put("ride_id", "" + tracking.getData().getActive_User_Ride().getCarpooling_ride_id());
-                                map.put("carpooling_ride_user_detail_id",""+tracking.getData().getActive_User_Ride().getPickup_users().get(pos).getPickup_user_id());
+                                map.put("carpooling_ride_user_detail_id", "" + tracking.getData().getActive_User_Ride().getPickup_users().get(pos).getPickup_user_id());
                                 map.put("other_reason", etOtherReason.getText().toString());
                                 map.put("current_time", ts);
                                 manager._post(API_S.Tags.ONGOING_RIDE_CANCEL, API_S.Endpoints.ONGOING_RIDE_CANCEL, map, sessionManager);
@@ -729,12 +729,12 @@ public class TrackingActivity extends AppCompatActivity implements ApiManager.AP
                             Toast.makeText(TrackingActivity.this, getResources().getString(R.string.please_select_reason), Toast.LENGTH_SHORT).show();
                         } else {
                             try {
-                                Long tsLong = System.currentTimeMillis()/1000;
+                                Long tsLong = System.currentTimeMillis() / 1000;
                                 String ts = tsLong.toString();
                                 progressDialog.show();
                                 HashMap<String, String> map = new HashMap<>();
                                 map.put("ride_id", "" + tracking.getData().getActive_User_Ride().getCarpooling_ride_id());
-                                map.put("carpooling_ride_user_detail_id",""+tracking.getData().getActive_User_Ride().getPickup_users().get(pos).getPickup_user_id());
+                                map.put("carpooling_ride_user_detail_id", "" + tracking.getData().getActive_User_Ride().getPickup_users().get(pos).getPickup_user_id());
                                 map.put("cancel_reason_id", cancelReasonId);
                                 map.put("current_time", ts);
                                 manager._post(API_S.Tags.ONGOING_RIDE_CANCEL, API_S.Endpoints.ONGOING_RIDE_CANCEL, map, sessionManager);
@@ -756,6 +756,7 @@ public class TrackingActivity extends AppCompatActivity implements ApiManager.AP
             alertDialog.show();
         }
     }
+
     @Layout(R.layout.raw_cancel_reason)
     class HolderCancelReasons {
         @View(R.id.radio_reason)
@@ -765,6 +766,7 @@ public class TrackingActivity extends AppCompatActivity implements ApiManager.AP
         @Position
         int mPostion;
         ModelTracking.DataBean.ActiveUserRideBean.CancelReasonBean cancelReasonBean;
+
         public HolderCancelReasons(ModelTracking.DataBean.ActiveUserRideBean.CancelReasonBean cancelReasonBean) {
             this.cancelReasonBean = cancelReasonBean;
         }
@@ -773,11 +775,11 @@ public class TrackingActivity extends AppCompatActivity implements ApiManager.AP
         @Resolve
         void setData() {
             try {
-                if(position == null){
+                if (position == null) {
                     radioReason.setChecked(false);
-                }else {
+                } else {
                     if (mPostion == position) {
-                        cancelReasonId = ""+cancelReasonBean.getId();
+                        cancelReasonId = "" + cancelReasonBean.getId();
                         radioReason.setChecked(true);
                     } else {
                         radioReason.setChecked(false);
@@ -792,25 +794,25 @@ public class TrackingActivity extends AppCompatActivity implements ApiManager.AP
                 @Override
                 public void onClick(android.view.View v) {
                     etOtherReason.setEnabled(false);
-                    if(radioOther.isChecked()){
+                    if (radioOther.isChecked()) {
                         radioOther.setChecked(false);
                     }
                     placeholder_cancel_reason.refresh();
                     position = mPostion;
-                    cancelReasonId = ""+cancelReasonBean.getId();
+                    cancelReasonId = "" + cancelReasonBean.getId();
                 }
             });
         }
     }
 
     @Layout(R.layout.raw_receipt)
-    class HolderReceipt{
+    class HolderReceipt {
         @View(R.id.tv_left_text)
         TextView tvLeftText;
         @View(R.id.tv_right_text)
         TextView tvRightText;
 
-        ModelReceiptDriver.DataBean.DriverReceiptBean.BodyBean.RideDetailsBean rideDetailsBean ;
+        ModelReceiptDriver.DataBean.DriverReceiptBean.BodyBean.RideDetailsBean rideDetailsBean;
 
         public HolderReceipt(ModelReceiptDriver.DataBean.DriverReceiptBean.BodyBean.RideDetailsBean rideDetailsBean) {
             this.rideDetailsBean = rideDetailsBean;
@@ -818,18 +820,19 @@ public class TrackingActivity extends AppCompatActivity implements ApiManager.AP
 
 
         @Resolve
-        void setData(){
-            try{
-                tvLeftText.setText(""+rideDetailsBean.getLeft_text());
-                tvRightText.setText(""+rideDetailsBean.getRight_text());
-            }catch (Exception e){
+        void setData() {
+            try {
+                tvLeftText.setText("" + rideDetailsBean.getLeft_text());
+                tvRightText.setText("" + rideDetailsBean.getRight_text());
+            } catch (Exception e) {
                 e.printStackTrace();
                 Toast.makeText(TrackingActivity.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
             }
         }
     }
+
     @Layout(R.layout.raw_receipt)
-    class HolderReceiptBill{
+    class HolderReceiptBill {
         @View(R.id.tv_left_text)
         TextView tvLeftText;
         @View(R.id.tv_right_text)
@@ -843,11 +846,11 @@ public class TrackingActivity extends AppCompatActivity implements ApiManager.AP
 
 
         @Resolve
-        void setData(){
-            try{
-                tvLeftText.setText(""+billDetailsBean.getLeft_text());
-                tvRightText.setText(""+billDetailsBean.getRight_text());
-            }catch (Exception e){
+        void setData() {
+            try {
+                tvLeftText.setText("" + billDetailsBean.getLeft_text());
+                tvRightText.setText("" + billDetailsBean.getRight_text());
+            } catch (Exception e) {
                 e.printStackTrace();
                 Toast.makeText(TrackingActivity.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
             }
@@ -856,7 +859,7 @@ public class TrackingActivity extends AppCompatActivity implements ApiManager.AP
 
 
     @Layout(R.layout.raw_receipt)
-    class HolderFooter{
+    class HolderFooter {
         @com.mindorks.placeholderview.annotations.View(R.id.tv_left_text)
         TextView tvLeftText;
         @com.mindorks.placeholderview.annotations.View(R.id.tv_right_text)
@@ -870,11 +873,11 @@ public class TrackingActivity extends AppCompatActivity implements ApiManager.AP
 
 
         @Resolve
-        void setData(){
-            try{
-                tvLeftText.setText(""+footer.getLeft_text());
-                tvRightText.setText(""+footer.getRight_text());
-            }catch (Exception e){
+        void setData() {
+            try {
+                tvLeftText.setText("" + footer.getLeft_text());
+                tvRightText.setText("" + footer.getRight_text());
+            } catch (Exception e) {
                 e.printStackTrace();
                 Toast.makeText(TrackingActivity.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
             }

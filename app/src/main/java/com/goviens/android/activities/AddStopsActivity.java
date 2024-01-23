@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.goviens.android.R;
 import com.goviens.android.databinding.ActivityAddCarBinding;
 import com.goviens.android.databinding.ActivityAddStopsBinding;
+import com.goviens.android.databinding.ActivitySignUpBinding;
 import com.goviens.android.models.ModelStepOne;
 import com.goviens.android.models.ModelStepThree;
 import com.goviens.android.utils.API_S;
@@ -34,7 +35,6 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 
-import butterknife.ButterKnife;
 
 public class AddStopsActivity extends AppCompatActivity implements ApiManager.APIFETCHER {
 
@@ -55,8 +55,7 @@ public class AddStopsActivity extends AppCompatActivity implements ApiManager.AP
         super.onCreate(savedInstanceState);
 
         mBinding = ActivityAddStopsBinding.inflate(getLayoutInflater());
-        View view = mBinding.getRoot();          //Root xml or viewGroup will be a part of converted view over here
-        setContentView(view);
+        setContentView(mBinding.getRoot());
 
 
         manager = new ApiManager(this,this);

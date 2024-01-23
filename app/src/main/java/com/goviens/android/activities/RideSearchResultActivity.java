@@ -18,6 +18,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.goviens.android.R;
+import com.goviens.android.databinding.ActivityRideSearchResultBinding;
+import com.goviens.android.databinding.ActivitySignUpBinding;
 import com.goviens.android.models.ModelSearch;
 import com.goviens.android.models.ModelSearchDetails;
 import com.goviens.android.utils.API_S;
@@ -35,21 +37,15 @@ import com.mohammedalaa.seekbar.RangeSeekBarView;
 import java.util.HashMap;
 
 
-import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class RideSearchResultActivity extends AppCompatActivity implements ApiManager.APIFETCHER {
 
 
     PlaceHolderView placeHolderSearchRide;
-    ImageView imgBack;
     ModelSearch modelSearch;
 
-    TextView tvTo;
-    TextView tvFrom;
-    Button btnFilter;
 
-    TextView tvDtTime;
 
     int radius;
     String pickup_id,drop_id;
@@ -59,12 +55,18 @@ public class RideSearchResultActivity extends AppCompatActivity implements ApiMa
     SessionManager sessionManager;
     ProgressDialog progressDialog;
 
+    ActivityRideSearchResultBinding binding;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        binding = ActivityRideSearchResultBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+
         setContentView(R.layout.activity_ride_search_result);
-        ButterKnife.bind(this);
         manager = new ApiManager(this,this);
         sessionManager = new SessionManager(this);
         progressDialog = new ProgressDialog(this);
@@ -74,17 +76,17 @@ public class RideSearchResultActivity extends AppCompatActivity implements ApiMa
         for(int i =0; i<modelSearch.getData().size(); i++) {
             placeHolderSearchRide.addView(new HolderSearchRide(modelSearch.getData().get(i)));
         }
-        imgBack.setOnClickListener(new android.view.View.OnClickListener() {
+        binding.imgBack.setOnClickListener(new android.view.View.OnClickListener() {
             @Override
             public void onClick(android.view.View view) {
                 finish();
             }
         });
-        tvFrom.setText(getIntent().getStringExtra("from"));
-        tvTo.setText(getIntent().getStringExtra("to"));
-        tvDtTime.setText(AppUtils.getDateTimeInDayFormat(getIntent().getStringExtra("ride_timestamp"))+" | "
+        binding.tvFrom.setText(getIntent().getStringExtra("from"));
+        binding.tvTo.setText(getIntent().getStringExtra("to"));
+        binding.tvDtTime.setText(AppUtils.getDateTimeInDayFormat(getIntent().getStringExtra("ride_timestamp"))+" | "
                 +getIntent().getStringExtra("no_of_seats")+" "+getResources().getString(R.string.seats));
-        btnFilter.setOnClickListener(new android.view.View.OnClickListener() {
+        binding.btnFilter.setOnClickListener(new android.view.View.OnClickListener() {
             @Override
             public void onClick(android.view.View view) {
                 try {

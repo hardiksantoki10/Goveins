@@ -13,6 +13,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.goviens.android.R;
+import com.goviens.android.databinding.ActivitySignUpBinding;
+import com.goviens.android.databinding.ActivityWalletBinding;
 import com.goviens.android.models.ModelAddMoney;
 import com.goviens.android.models.ModelPayoutHistory;
 import com.goviens.android.models.ModelWallet;
@@ -24,24 +26,13 @@ import com.goviens.android.utils.SingletonGson;
 import java.util.HashMap;
 
 
-import butterknife.ButterKnife;
 
 public class WalletActivity extends AppCompatActivity implements ApiManager.APIFETCHER {
 
 
-    LinearLayout linearPayout;
-    LinearLayout linearTripPayment;
-    TextView tvBalance;
-    TextView tvHoldAmt;
-    TextView tvRideId;
-    ImageView imgBack;
 
-    Button btnAddMoney;
 
-    Button btnWithdrawal;
 
-    LinearLayout cardWallet;
-    LinearLayout cardHoldAmt;
 
     ProgressDialog progressDialog;
     ApiManager apiManager;
@@ -52,17 +43,21 @@ public class WalletActivity extends AppCompatActivity implements ApiManager.APIF
 
     String amt;
 
+    ActivityWalletBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_wallet);
-        ButterKnife.bind(this);
+
+        binding = ActivityWalletBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
         apiManager = new ApiManager(this,this);
         manager = new SessionManager(this);
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage(this.getResources().getString(R.string.loading));
         progressDialog.setCancelable(false);
-        cardHoldAmt.setVisibility(View.GONE);
+        binding.cardHoldAmt.setVisibility(View.GONE);
         clickListeners();
     }
 
@@ -85,7 +80,7 @@ public class WalletActivity extends AppCompatActivity implements ApiManager.APIF
     }
 
     private void clickListeners(){
-        linearPayout.setOnClickListener(new View.OnClickListener() {
+        binding.linearPayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try{
@@ -97,13 +92,13 @@ public class WalletActivity extends AppCompatActivity implements ApiManager.APIF
             }
         });
 
-        imgBack.setOnClickListener(new View.OnClickListener() {
+        binding.imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-        cardWallet.setOnClickListener(new View.OnClickListener() {
+        binding.cardWallet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(modelWallet.getData().getWallet_transaction() != null) {
@@ -120,7 +115,7 @@ public class WalletActivity extends AppCompatActivity implements ApiManager.APIF
             }
         });
 
-        cardHoldAmt.setOnClickListener(new View.OnClickListener() {
+        binding.cardHoldAmt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(modelWallet.getData().getHold_amount_details().size() > 0) {
@@ -133,7 +128,7 @@ public class WalletActivity extends AppCompatActivity implements ApiManager.APIF
             }
         });
 
-        linearTripPayment.setOnClickListener(new View.OnClickListener() {
+        binding.linearTripPayments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(WalletActivity.this,PayoutActivity.class)
@@ -142,7 +137,7 @@ public class WalletActivity extends AppCompatActivity implements ApiManager.APIF
             }
         });
 
-        btnAddMoney.setOnClickListener(new View.OnClickListener() {
+        binding.btnAddMoney.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(WalletActivity.this,PaymentOptionsActivity.class)
@@ -151,7 +146,7 @@ public class WalletActivity extends AppCompatActivity implements ApiManager.APIF
             }
         });
 
-        btnWithdrawal.setOnClickListener(new View.OnClickListener() {
+        binding.btnWithdrawal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(WalletActivity.this,PaymentOptionsActivity.class)
@@ -203,8 +198,8 @@ public class WalletActivity extends AppCompatActivity implements ApiManager.APIF
                 response = "" + script;
                 modelWallet = SingletonGson.getInstance().fromJson("" + script, ModelWallet.class);
                 if (modelWallet.getResult().equals("1")) {
-                    tvBalance.setText(modelWallet.getData().getWallet_balance());
-                    tvHoldAmt.setText(modelWallet.getData().getHold_amount());
+                    binding.tvBalance.setText(modelWallet.getData().getWallet_balance());
+                    binding.tvHoldAmt.setText(modelWallet.getData().getHold_amount());
 //                tvRideId.setText("RIDE ID:"+modelWallet.getData().getHold_amount_details().get(0).getCarpooling_ride_id());
                 }
             } catch (Exception e) {

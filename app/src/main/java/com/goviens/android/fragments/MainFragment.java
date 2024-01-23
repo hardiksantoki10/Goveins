@@ -69,7 +69,6 @@ import java.util.List;
 import java.util.Locale;
 
 
-import butterknife.ButterKnife;
 
 public class MainFragment extends Fragment implements OnMapReadyCallback, ApiManager.APIFETCHER {
 
@@ -159,7 +158,6 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, ApiMan
                              Bundle savedInstanceState) {
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-        ButterKnife.bind(this, rootView);
         sessionManager = new SessionManager(getActivity());
         apiManagerNew = new ApiManager(this,getActivity());
         mapFragment = (SupportMapFragment) this.getChildFragmentManager()

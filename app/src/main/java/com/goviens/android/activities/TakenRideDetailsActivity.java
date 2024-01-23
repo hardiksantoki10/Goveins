@@ -2,7 +2,6 @@ package com.goviens.android.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import android.app.ProgressDialog;
@@ -23,6 +22,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.goviens.android.R;
+import com.goviens.android.databinding.ActivitySignUpBinding;
+import com.goviens.android.databinding.ActivityTakenRideDetailsBinding;
 import com.goviens.android.models.ModelProfileDetails;
 import com.goviens.android.models.ModelTakenRideDetails;
 import com.goviens.android.utils.API_S;
@@ -42,33 +43,6 @@ public class TakenRideDetailsActivity extends AppCompatActivity implements ApiMa
     ApiManager manager;
     SessionManager sessionManager;
 
-    Button btnCancel;
-    Button btnRating;
-    TextView tvDate;
-    TextView tvAmt;
-    TextView tvOTP;
-    LinearLayout linearFemale;
-    LinearLayout linearAc;
-    TextView tvStartTime;
-    TextView tvEndTime;
-    TextView tvFrom;
-    TextView tvTo;
-    LinearLayout linearDriver;
-    CircleImageView imageProfile;
-    TextView tvName;
-    TextView tvRating;
-    CircleImageView imgVehicle;
-    TextView tvVehicleName;
-    TextView tvVehicleNumber;
-    TextView tvVehicleColor;
-    PlaceHolderView placeHolderRiders;
-    LinearLayout linearRiders;
-    TextView tvAmountType;
-    TextView tvInstruction;
-    TextView tvLabelInstruction;
-    ImageView imgBack;
-    TextView tvTakenSeats;
-    TextView tvAvailableSeats;
     ModelTakenRideDetails rideDetails;
     ProgressDialog progressDialog;
     String cancelReasonId = "null";
@@ -76,19 +50,20 @@ public class TakenRideDetailsActivity extends AppCompatActivity implements ApiMa
     String from;
 
     PlaceHolderView placeholder_cancel_reason;
-    RadioButton radioOther;
     EditText etOtherReason;
+    RadioButton radioOther;
 
     String other_reason = "";
     Integer position = 0;
 
-
+    ActivityTakenRideDetailsBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_taken_ride_details);
-        ButterKnife.bind(this);
+        binding = ActivityTakenRideDetailsBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
         manager = new ApiManager(this, this);
         sessionManager = new SessionManager(this);
         progressDialog = new ProgressDialog(this);
@@ -96,17 +71,17 @@ public class TakenRideDetailsActivity extends AppCompatActivity implements ApiMa
         progressDialog.setCancelable(false);
         from = getIntent().getStringExtra("from"); // 0 for upcoming 1 for ongoing
         if(from.equals("1")){
-            btnRating.setVisibility(View.GONE);
+            binding.btnRating.setVisibility(View.GONE);
         }else {
-            btnRating.setVisibility(View.GONE);
+            binding.btnRating.setVisibility(View.GONE);
         }
-        imgBack.setOnClickListener(new android.view.View.OnClickListener() {
+        binding.imgBack.setOnClickListener(new android.view.View.OnClickListener() {
             @Override
             public void onClick(android.view.View view) {
                 finish();
             }
         });
-        btnRating.setOnClickListener(new View.OnClickListener() {
+        binding.btnRating.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openDialogForRating(v);
@@ -114,7 +89,7 @@ public class TakenRideDetailsActivity extends AppCompatActivity implements ApiMa
         });
         rideDetails = SingletonGson.getInstance().fromJson(getIntent().getStringExtra("script"),ModelTakenRideDetails.class);
         setData();
-        linearDriver.setOnClickListener(new View.OnClickListener() {
+        binding.linearDriver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try {
@@ -134,7 +109,7 @@ public class TakenRideDetailsActivity extends AppCompatActivity implements ApiMa
                 }
             }
         });
-        btnCancel.setOnClickListener(new View.OnClickListener() {
+        binding.btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 //                AlertDialog.Builder builderSingle = new AlertDialog.Builder(TakenRideDetailsActivity.this);
@@ -281,61 +256,61 @@ public class TakenRideDetailsActivity extends AppCompatActivity implements ApiMa
 
     private void setData() {
         try {
-            tvTakenSeats.setText(""+rideDetails.getData().get(0).getTaken_ride_details().getBooked_seat());
-            tvAvailableSeats.setText(""+rideDetails.getData().get(0).getTaken_ride_details().getAvailable_seats());
-            tvDate.setText(AppUtils.getDateTimeInDayFormat("" + rideDetails.getData().get(0).getTaken_ride_details().getRide_time()));
-            tvAmt.setText(""+rideDetails.getData().get(0).getTaken_ride_details().getRide_amount());
+            binding.tvTakenSeats.setText(""+rideDetails.getData().get(0).getTaken_ride_details().getBooked_seat());
+            binding.tvAvailableSeats.setText(""+rideDetails.getData().get(0).getTaken_ride_details().getAvailable_seats());
+            binding.tvDt.setText(AppUtils.getDateTimeInDayFormat("" + rideDetails.getData().get(0).getTaken_ride_details().getRide_time()));
+            binding.tvAmt.setText(""+rideDetails.getData().get(0).getTaken_ride_details().getRide_amount());
             if(rideDetails.getData().get(0).getTaken_ride_details().getPayment_status() == 1){
-                tvAmountType.setText(getResources().getString(R.string.wallet));
+                binding.tvAmountType.setText(getResources().getString(R.string.wallet));
             }else if(rideDetails.getData().get(0).getTaken_ride_details().getPayment_status() == 3){
-                tvAmountType.setText(getResources().getString(R.string.wallet_at_pickup));
+                binding.tvAmountType.setText(getResources().getString(R.string.wallet_at_pickup));
             }else{
-                tvAmountType.setText(getResources().getString(R.string.cash));
+                binding.tvAmountType.setText(getResources().getString(R.string.cash));
             }
-            tvOTP.setText(""+rideDetails.getData().get(0).getTaken_ride_details().getOtp());
+            binding.tvOtp.setText(""+rideDetails.getData().get(0).getTaken_ride_details().getOtp());
             if(Integer.parseInt(rideDetails.getData().get(0).getOffer_user_detail().getRide_status()) >2){
-                btnCancel.setVisibility(View.GONE);
+                binding.btnCancel.setVisibility(View.GONE);
             }else {
-                btnCancel.setVisibility(View.VISIBLE);
+                binding.btnCancel.setVisibility(View.VISIBLE);
             }
-            btnRating.setVisibility(View.GONE);
+            binding.btnRating.setVisibility(View.GONE);
             if(rideDetails.getData().get(0).getTaken_ride_details().getInstructions() != null){
                 if(!rideDetails.getData().get(0).getTaken_ride_details().getInstructions().equals("")) {
-                    tvLabelInstruction.setVisibility(View.VISIBLE);
-                    tvInstruction.setVisibility(View.VISIBLE);
-                    tvInstruction.setText(rideDetails.getData().get(0).getTaken_ride_details().getInstructions());
+                    binding.tvLabelInstruction.setVisibility(View.VISIBLE);
+                    binding.tvInstruction.setVisibility(View.VISIBLE);
+                    binding.tvInstruction.setText(rideDetails.getData().get(0).getTaken_ride_details().getInstructions());
                 }else {
-                    tvLabelInstruction.setVisibility(View.GONE);
-                    tvInstruction.setVisibility(View.GONE);
+                    binding.tvLabelInstruction.setVisibility(View.GONE);
+                    binding.tvInstruction.setVisibility(View.GONE);
                 }
             }else {
-                tvLabelInstruction.setVisibility(View.GONE);
-                tvInstruction.setVisibility(View.GONE);
+               binding.tvLabelInstruction.setVisibility(View.GONE);
+               binding.tvInstruction.setVisibility(View.GONE);
             }
             if(rideDetails.getData().get(0).getTaken_ride_details().getFemale_ride().equals("1")){
-                linearFemale.setVisibility(View.VISIBLE);
+                binding.linearFemale.setVisibility(View.VISIBLE);
             }else {
-                linearFemale.setVisibility(View.GONE);
+                binding.linearFemale.setVisibility(View.GONE);
             }
             if(rideDetails.getData().get(0).getTaken_ride_details().getAc_ride().equals("1")){
-                linearAc.setVisibility(View.VISIBLE);
+                binding.linearAc.setVisibility(View.VISIBLE);
             }else {
-                linearAc.setVisibility(View.GONE);
+                binding.linearAc.setVisibility(View.GONE);
             }
-            tvStartTime.setText(AppUtils.getTimeViaTimestamp(rideDetails.getData().get(0).getTaken_ride_details().getRide_time()));
-            tvEndTime.setText(AppUtils.getTimeViaTimestamp(rideDetails.getData().get(0).getTaken_ride_details().getEnd_ride_time()));
-            tvFrom.setText(rideDetails.getData().get(0).getTaken_ride_details().getPickup_location());
-            tvTo.setText(rideDetails.getData().get(0).getTaken_ride_details().getDrop_location());
-            Glide.with(this).load(rideDetails.getData().get(0).getOffer_user_detail().getImage()).into(imageProfile);
-            tvName.setText(rideDetails.getData().get(0).getOffer_user_detail().getName());
-            Glide.with(this).load(rideDetails.getData().get(0).getTake_vehicle_details().getVehicle_image()).into(imgVehicle);
-            tvVehicleName.setText(rideDetails.getData().get(0).getTake_vehicle_details().getVehicle_type_name());
-            tvVehicleColor.setText(rideDetails.getData().get(0).getTake_vehicle_details().getVehicle_color());
-            tvVehicleNumber.setText(rideDetails.getData().get(0).getTake_vehicle_details().getVehicle_number());
+            binding.tvStartTime.setText(AppUtils.getTimeViaTimestamp(rideDetails.getData().get(0).getTaken_ride_details().getRide_time()));
+            binding.tvEndTime.setText(AppUtils.getTimeViaTimestamp(rideDetails.getData().get(0).getTaken_ride_details().getEnd_ride_time()));
+            binding.tvFrom.setText(rideDetails.getData().get(0).getTaken_ride_details().getPickup_location());
+            binding.tvTo.setText(rideDetails.getData().get(0).getTaken_ride_details().getDrop_location());
+            Glide.with(this).load(rideDetails.getData().get(0).getOffer_user_detail().getImage()).into(binding.imgProfile);
+            binding.tvName.setText(rideDetails.getData().get(0).getOffer_user_detail().getName());
+            Glide.with(this).load(rideDetails.getData().get(0).getTake_vehicle_details().getVehicle_image()).into(binding.imgVehicle);
+            binding.tvVehicleName.setText(rideDetails.getData().get(0).getTake_vehicle_details().getVehicle_type_name());
+            binding.tvVehicleColor.setText(rideDetails.getData().get(0).getTake_vehicle_details().getVehicle_color());
+            binding.tvVehicleNumber.setText(rideDetails.getData().get(0).getTake_vehicle_details().getVehicle_number());
             if (rideDetails.getData().get(0).getAccept_users().size() != 0) {
-                linearRiders.setVisibility(android.view.View.VISIBLE);
+                binding.linearRiders.setVisibility(android.view.View.VISIBLE);
                 for (int i = 0; i < rideDetails.getData().get(0).getAccept_users().size(); i++) {
-                    placeHolderRiders.addView(new HolderRiders(rideDetails.getData().get(0).getAccept_users().get(i)));
+                    binding.placeHolderRiders.addView(new HolderRiders(rideDetails.getData().get(0).getAccept_users().get(i)));
                 }
             }
         }catch (Exception e){

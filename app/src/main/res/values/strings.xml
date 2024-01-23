@@ -289,5 +289,6 @@
     <string name="rationale_ask_again">This app may not work correctly without the requested permissions. Open the app settings screen to modify app permissions.</string>
     <string name="title_settings_dialog">Permissions Required</string>
     <string name="rationale_camera">Feature needs to access your device camera</string>
+    <string name="onesignal_app_id">5168e658-25ba-476f-9d18-e488f0b3a9b3</string>
 
 </resources>

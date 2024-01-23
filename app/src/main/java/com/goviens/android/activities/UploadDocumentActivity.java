@@ -14,6 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.goviens.android.R;
+import com.goviens.android.databinding.ActivitySignUpBinding;
+import com.goviens.android.databinding.ActivityUploadDocumentBinding;
 import com.goviens.android.models.ModelDocument;
 import com.goviens.android.models.ModelUserDetails;
 import com.goviens.android.utils.API_S;
@@ -29,7 +31,6 @@ import com.mindorks.placeholderview.annotations.View;
 import java.util.HashMap;
 
 
-import butterknife.ButterKnife;
 
 public class UploadDocumentActivity extends AppCompatActivity implements ApiManager.APIFETCHER {
 
@@ -41,21 +42,25 @@ public class UploadDocumentActivity extends AppCompatActivity implements ApiMana
     ModelDocument modelDocument;
     String forr="";
 
-    Button btnSubmit;
-
-    TextView tvUploadMessage;
 
 
-    ImageView imgBack;
+
     String userVehicleId;
     ProgressDialog progressDialog;
     boolean pendingDoc = true;
     boolean checkDoc = true;
+
+    ActivityUploadDocumentBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_upload_document);
-        ButterKnife.bind(this);
+
+        binding = ActivityUploadDocumentBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+
+
         manager = new ApiManager(this,this);
         sessionManager = new SessionManager(this);
 
@@ -65,13 +70,13 @@ public class UploadDocumentActivity extends AppCompatActivity implements ApiMana
 
         forr = getIntent().getStringExtra("for");
 
-        imgBack.setOnClickListener(new android.view.View.OnClickListener() {
+        binding.imgBack.setOnClickListener(new android.view.View.OnClickListener() {
             @Override
             public void onClick(android.view.View view) {
                 finish();
             }
         });
-        btnSubmit.setOnClickListener(new android.view.View.OnClickListener() {
+        binding.btnSubmit.setOnClickListener(new android.view.View.OnClickListener() {
             @Override
             public void onClick(android.view.View v) {
                 if(forr.equals("user")) {
@@ -166,16 +171,16 @@ public class UploadDocumentActivity extends AppCompatActivity implements ApiMana
                     }
                 } else {
                     if(modelDocument.getData().getVehicle_doc().size() != 0) {
-                        tvUploadMessage.setVisibility(android.view.View.GONE);
+                        binding.tvUploadMessage.setVisibility(android.view.View.GONE);
                         placeHolderDocument.setVisibility(android.view.View.VISIBLE);
-                        btnSubmit.setVisibility(android.view.View.VISIBLE);
+                        binding.btnSubmit.setVisibility(android.view.View.VISIBLE);
                         for (int i = 0; i < modelDocument.getData().getVehicle_doc().size(); i++) {
                             placeHolderDocument.addView(new HolderDocumentsVehicleHeader(modelDocument.getData().getVehicle_doc().get(i)));
                         }
                     }else {
-                        btnSubmit.setVisibility(android.view.View.GONE);
+                        binding.btnSubmit.setVisibility(android.view.View.GONE);
                         placeHolderDocument.setVisibility(android.view.View.GONE);
-                        tvUploadMessage.setVisibility(android.view.View.VISIBLE);
+                        binding.tvUploadMessage.setVisibility(android.view.View.VISIBLE);
                     }
                 }
             }

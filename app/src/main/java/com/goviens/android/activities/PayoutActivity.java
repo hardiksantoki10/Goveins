@@ -6,31 +6,36 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import com.goviens.android.R;
+import com.goviens.android.databinding.ActivityPayoutBinding;
+import com.goviens.android.databinding.ActivitySignUpBinding;
 import com.goviens.android.models.ModelWallet;
 import com.goviens.android.utils.SingletonGson;
 import com.mindorks.placeholderview.PlaceHolderView;
 
 
-import butterknife.ButterKnife;
 
 public class PayoutActivity extends AppCompatActivity {
 
 
     String PAYOUT;
-    TextView tvHeading;
     PlaceHolderView placeHolderTransaction;
 
     ModelWallet modelWallet;
+    ActivityPayoutBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_payout);
-        ButterKnife.bind(this);
+        binding = ActivityPayoutBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+
+
         PAYOUT = getIntent().getStringExtra("payout");
         if(PAYOUT.equals("1")){
-            tvHeading.setText("Payout");
+            binding.tvHeading.setText("Payout");
         }else {
-            tvHeading.setText("Trip Payments");
+            binding.tvHeading.setText("Trip Payments");
         }
         modelWallet = SingletonGson.getInstance().fromJson(getIntent().getStringExtra("script"), ModelWallet.class);
         if(PAYOUT.equals("0")){

@@ -33,6 +33,7 @@ import com.bumptech.glide.Glide;
 import com.goviens.android.R;
 import com.goviens.android.databinding.ActivityAddCarBinding;
 import com.goviens.android.databinding.ActivityLoginBinding;
+import com.goviens.android.databinding.ActivitySignUpBinding;
 import com.goviens.android.models.ModelAddVehicle;
 import com.goviens.android.models.ModelCountryArea;
 import com.goviens.android.models.ModelVehicleConfig;
@@ -50,7 +51,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import butterknife.ButterKnife;
 
 public class AddCarActivity extends AppCompatActivity implements ApiManager.APIFETCHER {
 
@@ -84,11 +84,9 @@ public class AddCarActivity extends AppCompatActivity implements ApiManager.APIF
         super.onCreate(savedInstanceState);
 
         mBinding = ActivityAddCarBinding.inflate(getLayoutInflater());
-        View view = mBinding.getRoot();          //Root xml or viewGroup will be a part of converted view over here
-        setContentView(view);
+        setContentView(mBinding.getRoot());
 
 
-        ButterKnife.bind(this);
         manager = new ApiManager(this,this);
         sessionManager = new SessionManager(this);
 

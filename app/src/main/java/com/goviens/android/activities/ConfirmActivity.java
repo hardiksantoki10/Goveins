@@ -30,7 +30,6 @@ import com.mindorks.placeholderview.annotations.View;
 import java.util.HashMap;
 
 
-import butterknife.ButterKnife;
 
 public class ConfirmActivity extends AppCompatActivity implements ApiManager.APIFETCHER {
 

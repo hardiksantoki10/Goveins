@@ -48,8 +48,6 @@ import java.util.HashMap;
 import java.util.Locale;
 
 
-import butterknife.ButterKnife;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class EditProfileActivity extends AppCompatActivity implements ApiManager.APIFETCHER {
 

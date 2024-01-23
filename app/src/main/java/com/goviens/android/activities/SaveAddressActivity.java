@@ -18,6 +18,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.goviens.android.R;
+import com.goviens.android.databinding.ActivitySaveAddressBinding;
+import com.goviens.android.databinding.ActivitySignUpBinding;
 import com.goviens.android.models.ModelAddressList;
 import com.goviens.android.models.ModelDeleteAddress;
 import com.goviens.android.utils.API_S;
@@ -35,7 +37,6 @@ import com.mindorks.placeholderview.annotations.View;
 import java.util.HashMap;
 
 
-import butterknife.ButterKnife;
 
 public class SaveAddressActivity extends AppCompatActivity implements ApiManager.APIFETCHER {
 
@@ -43,21 +44,23 @@ public class SaveAddressActivity extends AppCompatActivity implements ApiManager
     SessionManager sessionManager;
 
     PlaceHolderView placeHolderAddress;
-    ImageView imgAdd;
 
-    ImageView imgBack;
-    Button btnMap;
     float bearing;
     private FusedLocationProviderClient mFusedLocationClient;
     Location userLocation;
 
     ProgressDialog progressDialog;
 
+    ActivitySaveAddressBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_save_address);
-        ButterKnife.bind(this);
+
+        binding = ActivitySaveAddressBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+
         manager = new ApiManager(this,this);
         sessionManager = new SessionManager(this);
 
@@ -68,20 +71,20 @@ public class SaveAddressActivity extends AppCompatActivity implements ApiManager
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-        imgBack.setOnClickListener(new android.view.View.OnClickListener() {
+        binding.imgBack.setOnClickListener(new android.view.View.OnClickListener() {
             @Override
             public void onClick(android.view.View view) {
                 finish();
             }
         });
         if(getIntent().getStringExtra("for").equals("1")){
-            btnMap.setVisibility(android.view.View.GONE);
-            imgAdd.setVisibility(android.view.View.VISIBLE);
+            binding.btnMap.setVisibility(android.view.View.GONE);
+            binding.imgAdd.setVisibility(android.view.View.VISIBLE);
         }else {
-            btnMap.setVisibility(android.view.View.VISIBLE);
-            imgAdd.setVisibility(android.view.View.GONE);
+            binding.btnMap.setVisibility(android.view.View.VISIBLE);
+            binding.imgAdd.setVisibility(android.view.View.GONE);
         }
-        imgAdd.setOnClickListener(new android.view.View.OnClickListener() {
+        binding.imgAdd.setOnClickListener(new android.view.View.OnClickListener() {
             @Override
             public void onClick(android.view.View v) {
                 startActivity(new Intent(SaveAddressActivity.this,LocationSelectionActivity.class)
@@ -89,7 +92,7 @@ public class SaveAddressActivity extends AppCompatActivity implements ApiManager
                         .putExtra("user_bearing", ""+bearing));
             }
         });
-        btnMap.setOnClickListener(new android.view.View.OnClickListener() {
+        binding.btnMap.setOnClickListener(new android.view.View.OnClickListener() {
             @Override
             public void onClick(android.view.View v) {
                 Intent intent  = new Intent(SaveAddressActivity.this, LocationSelectionActivity.class)

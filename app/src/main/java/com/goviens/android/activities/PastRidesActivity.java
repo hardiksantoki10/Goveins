@@ -14,37 +14,38 @@ import android.widget.ImageView;
 
 import com.google.android.material.tabs.TabLayout;
 import com.goviens.android.R;
+import com.goviens.android.databinding.ActivityPastRidesBinding;
+import com.goviens.android.databinding.ActivitySignUpBinding;
 import com.goviens.android.fragments.PastOfferedFragment;
 import com.goviens.android.fragments.PastTakenFragment;
 
 
-import butterknife.ButterKnife;
 
 public class PastRidesActivity extends AppCompatActivity {
 
-    TabLayout tabLayout;
-    ViewPager viewPager;
-    ImageView imgBack;
 
     ProgressDialog progressDialog;
+    ActivityPastRidesBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_past_rides);
-        ButterKnife.bind(this);
-        tabLayout.addTab(tabLayout.newTab().setText(getResources().getString(R.string.taken_rides)));
-        tabLayout.addTab(tabLayout.newTab().setText(getResources().getString(R.string.offer_rides)));
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        final MyAdapter adapter = new MyAdapter(this, getSupportFragmentManager(), tabLayout.getTabCount());
-        viewPager.setAdapter(adapter);
+        binding = ActivityPastRidesBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        binding.tabLayout.addTab(binding.tabLayout.newTab().setText(getResources().getString(R.string.taken_rides)));
+        binding.tabLayout.addTab(binding.tabLayout.newTab().setText(getResources().getString(R.string.offer_rides)));
+        binding.tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        final MyAdapter adapter = new MyAdapter(this, getSupportFragmentManager(), binding.tabLayout.getTabCount());
+        binding.viewPager.setAdapter(adapter);
+
+        binding.viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(binding.tabLayout));
+
+        binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
+                binding.viewPager.setCurrentItem(tab.getPosition());
             }
 
             @Override
@@ -57,7 +58,7 @@ public class PastRidesActivity extends AppCompatActivity {
 
             }
         });
-        imgBack.setOnClickListener(new View.OnClickListener() {
+        binding.imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();

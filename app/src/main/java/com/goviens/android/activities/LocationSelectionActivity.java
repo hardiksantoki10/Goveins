@@ -63,7 +63,6 @@ import java.util.Locale;
 
 
 
-import butterknife.ButterKnife;
 
 public class LocationSelectionActivity extends AppCompatActivity implements OnMapReadyCallback,ApiManager.APIFETCHER {
 

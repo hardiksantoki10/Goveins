@@ -3,8 +3,6 @@ package com.goviens.android.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import butterknife.ButterKnife;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -18,50 +16,50 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.goviens.android.R;
+import com.goviens.android.databinding.ActivityPaymentMethodBinding;
+import com.goviens.android.databinding.ActivitySignUpBinding;
 
 public class PaymentMethodActivity extends AppCompatActivity {
 
-    RadioButton radioCash;
-    TextView tvCashText;
-    View view;
-    RadioButton radioWallet;
-    RadioButton radioWalletAtPickup;
-    Button btnContinue;
-    ImageView imgBack;
 
-    TextView tvBalance;
+    View view;
+
 
     String cashAmt;
+
+    ActivityPaymentMethodBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_payment_method);
-        ButterKnife.bind(this);
+        binding = ActivityPaymentMethodBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
         cashAmt = getIntent().getStringExtra("cashAmt");
-        tvBalance.setText(getResources().getString(R.string.balance_)+"  "+getIntent().getStringExtra("balance"));
+        binding.tvBalance.setText(getResources().getString(R.string.balance_)+"  "+getIntent().getStringExtra("balance"));
         if(cashAmt.equals("0")){
-            radioCash.setVisibility(View.GONE);
-            tvCashText.setVisibility(View.GONE);
+            binding.radioCash.setVisibility(View.GONE);
+            binding.tvCashText.setVisibility(View.GONE);
             view.setVisibility(View.GONE);
         }else {
-            radioCash.setVisibility(View.VISIBLE);
-            tvCashText.setVisibility(View.VISIBLE);
+            binding.radioCash.setVisibility(View.VISIBLE);
+            binding.tvCashText.setVisibility(View.VISIBLE);
             view.setVisibility(View.VISIBLE);
         }
-        btnContinue.setOnClickListener(new View.OnClickListener() {
+        binding.btnContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(radioCash.isChecked()){
+                if(binding.radioCash.isChecked()){
                     Intent intent = new Intent();
                     intent.putExtra("payment","2");
                     setResult(RESULT_OK, intent);
                     finish();
-                }else if(radioWallet.isChecked()){
+                }else if(binding.radioWallet.isChecked()){
                     Intent intent = new Intent();
                     intent.putExtra("payment","1");
                     setResult(RESULT_OK, intent);
                     finish();
-                }else if(radioWalletAtPickup.isChecked()){
+                }else if(binding.radioWalletAtPickup.isChecked()){
                     Intent intent = new Intent();
                     intent.putExtra("payment","3");
                     setResult(RESULT_OK, intent);
@@ -72,7 +70,7 @@ public class PaymentMethodActivity extends AppCompatActivity {
             }
         });
 
-        imgBack.setOnClickListener(new View.OnClickListener() {
+        binding.imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();

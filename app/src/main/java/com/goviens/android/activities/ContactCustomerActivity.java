@@ -29,7 +29,6 @@ import com.goviens.android.utils.SingletonGson;
 import java.util.HashMap;
 
 
-import butterknife.ButterKnife;
 
 public class ContactCustomerActivity extends AppCompatActivity implements ApiManager.APIFETCHER {
 

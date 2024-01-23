@@ -1,8 +1,5 @@
 package com.goviens.android.activities;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-
 import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
@@ -22,26 +19,25 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 
 import com.bumptech.glide.Glide;
 import com.goviens.android.BuildConfig;
 import com.goviens.android.R;
 import com.goviens.android.baseClass.BaseFragment;
+import com.goviens.android.databinding.ActivitySignUpBinding;
 import com.goviens.android.models.ModelSignup;
 import com.goviens.android.models.ModelUserDetails;
 import com.goviens.android.utils.API_S;
 import com.goviens.android.utils.ApiManager;
 import com.goviens.android.utils.ImageCompressMode;
+import com.goviens.android.utils.MyApplicationJavaClass;
 import com.goviens.android.utils.SessionManager;
 import com.goviens.android.utils.SingletonGson;
-import com.onesignal.OneSignal;
 import com.sampermissionutils.AfterPermissionGranted;
 import com.sampermissionutils.EasyPermissions;
 
@@ -51,28 +47,8 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
 
-
-import butterknife.ButterKnife;
-import de.hdodenhof.circleimageview.CircleImageView;
-
 public class SignUpActivity extends BaseFragment implements ApiManager.APIFETCHER, DatePickerDialog.OnDateSetListener {
 
-    Button btn_sign_up;
-
-    EditText etFirstName;
-    EditText etLastName;
-    EditText etEmailAddress;
-    EditText etReferralCode;
-
-    EditText etDob;
-
-    TextView tvTermsAndCondition;
-
-    CircleImageView imgProfile;
-
-    Spinner spinnerGender;
-
-    ImageView imgBack;
 
     String DATE;
     private String PLAYER_ID = "";
@@ -86,7 +62,8 @@ public class SignUpActivity extends BaseFragment implements ApiManager.APIFETCHE
     private String COMPRESSES_IMAGE = "";
     private Uri imageUri;
 
-    private Bitmap thumbnail;;
+    private Bitmap thumbnail;
+    ;
     String imagePath = "";
 
     private static final int RC_CAMERA_PERM = 123;
@@ -94,13 +71,15 @@ public class SignUpActivity extends BaseFragment implements ApiManager.APIFETCHE
     private static final int GALLERY_PICKER = 124;
 
     ProgressDialog progressDialog;
+    ActivitySignUpBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_up);
-        ButterKnife.bind(this);
-        apiManager = new ApiManager(this,this);
+        binding = ActivitySignUpBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        apiManager = new ApiManager(this, this);
         sessionManager = new SessionManager(SignUpActivity.this);
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage(this.getResources().getString(R.string.loading));
@@ -108,22 +87,22 @@ public class SignUpActivity extends BaseFragment implements ApiManager.APIFETCHE
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
 
-        ArrayAdapter aa = new ArrayAdapter(SignUpActivity.this,android.R.layout.simple_spinner_item,gender);
+        ArrayAdapter aa = new ArrayAdapter(SignUpActivity.this, android.R.layout.simple_spinner_item, gender);
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Setting the ArrayAdapter data on the Spinner
-        spinnerGender.setAdapter(aa);
-        imgBack.setOnClickListener(new View.OnClickListener() {
+        binding.spinnerGender.setAdapter(aa);
+        binding.imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
-        spinnerGender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        binding.spinnerGender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position == 0){
+                if (position == 0) {
                     selectedGender = "1";
-                }else {
+                } else {
                     selectedGender = "2";
                 }
             }
@@ -134,24 +113,17 @@ public class SignUpActivity extends BaseFragment implements ApiManager.APIFETCHE
             }
         });
 
-        tvTermsAndCondition.setOnClickListener(new View.OnClickListener() {
+        binding.tvTandc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(SignUpActivity.this,TermsAndConditionActivity.class)
-                .putExtra("country_id",getIntent().getStringExtra("country_id")));
+                startActivity(new Intent(SignUpActivity.this, TermsAndConditionActivity.class)
+                        .putExtra("country_id", getIntent().getStringExtra("country_id")));
             }
         });
+        PLAYER_ID = MyApplicationJavaClass.PLAYER_ID;
 
 
-
-        OneSignal.idsAvailable(new OneSignal.IdsAvailableHandler() {
-            @Override
-            public void idsAvailable(String userId, String registrationId) {
-                PLAYER_ID = userId;
-            }
-        });
-
-        etDob.setOnClickListener(new View.OnClickListener() {
+        binding.etDob.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final Calendar c = Calendar.getInstance();
@@ -170,7 +142,7 @@ public class SignUpActivity extends BaseFragment implements ApiManager.APIFETCHE
                                 Calendar cal = Calendar.getInstance(Locale.ENGLISH);
                                 cal.set(year, monthOfYear, dayOfMonth);
                                 DATE = dateFormat.format(cal.getTime());
-                                etDob.setText(""+dateFormat.format(cal.getTime()));
+                                binding.etDob.setText("" + dateFormat.format(cal.getTime()));
 
                             }
                         }, mYear, mMonth, mDay);
@@ -179,12 +151,12 @@ public class SignUpActivity extends BaseFragment implements ApiManager.APIFETCHE
                 //datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis());
                 //c.add(Calendar.YEAR, 4); // add 4 years to min date to have 2 years after now
                 datePickerDialog.getDatePicker().setMaxDate(cale.getTimeInMillis());
-               // datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+                // datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
                 datePickerDialog.show();
             }
         });
 
-        imgProfile.setOnClickListener(new View.OnClickListener() {
+        binding.profileImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openPickerDialog();
@@ -199,12 +171,12 @@ public class SignUpActivity extends BaseFragment implements ApiManager.APIFETCHE
             switch (requestCode) {
                 case GALLERY_PICKER:
                     ImageCompressMode imageCompressMode = new ImageCompressMode(this);
-                    Glide.with(SignUpActivity.this).load(data.getData()).into(imgProfile);
+                    Glide.with(SignUpActivity.this).load(data.getData()).into(binding.profileImg);
                     COMPRESSES_IMAGE = imageCompressMode.compressImage(getRealPathFromURI(data.getData()));
                     break;
                 case CAMERS_PICKER:
                     thumbnail = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
-                    imgProfile.setImageBitmap(thumbnail);
+                    binding.profileImg.setImageBitmap(thumbnail);
                     imagePath = getRealPathFromURI(imageUri);
 
                     ImageCompressMode imageCompressModee = new ImageCompressMode(this);
@@ -219,29 +191,27 @@ public class SignUpActivity extends BaseFragment implements ApiManager.APIFETCHE
 
                         case ExifInterface.ORIENTATION_ROTATE_90:
                             rotatedBitmap = rotateImage(thumbnail, 90);
-                            imgProfile.setImageBitmap(rotatedBitmap);
+                            binding.profileImg.setImageBitmap(rotatedBitmap);
                             break;
 
                         case ExifInterface.ORIENTATION_ROTATE_180:
                             rotatedBitmap = rotateImage(thumbnail, 180);
-                            imgProfile.setImageBitmap(rotatedBitmap);
+                            binding.profileImg.setImageBitmap(rotatedBitmap);
                             break;
 
                         case ExifInterface.ORIENTATION_ROTATE_270:
                             rotatedBitmap = rotateImage(thumbnail, 270);
-                            imgProfile.setImageBitmap(rotatedBitmap);
+                            binding.profileImg.setImageBitmap(rotatedBitmap);
                             break;
 
                         case ExifInterface.ORIENTATION_NORMAL:
                             rotatedBitmap = thumbnail;
-                            imgProfile.setImageBitmap(rotatedBitmap);
+                            binding.profileImg.setImageBitmap(rotatedBitmap);
                             break;
                         default:
                             rotatedBitmap = thumbnail;
-                            imgProfile.setImageBitmap(rotatedBitmap);
+                            binding.profileImg.setImageBitmap(rotatedBitmap);
                     }
-
-
 
 
 //                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -255,7 +225,7 @@ public class SignUpActivity extends BaseFragment implements ApiManager.APIFETCHE
 
                     break;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -333,23 +303,23 @@ public class SignUpActivity extends BaseFragment implements ApiManager.APIFETCHE
         callApi();
     }
 
-    void callApi(){
+    void callApi() {
         String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+.[a-z]+.[a-z]+";
-        if(COMPRESSES_IMAGE.equals("")){
+        if (COMPRESSES_IMAGE.equals("")) {
             Toast.makeText(this, getResources().getString(R.string.please_upload_photo), Toast.LENGTH_SHORT).show();
-        }else if(etFirstName.getText().toString().isEmpty()){
+        } else if (binding.etFirstName.getText().toString().isEmpty()) {
             Toast.makeText(this, getResources().getString(R.string.please_enter_first_name), Toast.LENGTH_SHORT).show();
-        }else if(etLastName.getText().toString().isEmpty()){
+        } else if (binding.etLastName.getText().toString().isEmpty()) {
             Toast.makeText(this, getResources().getString(R.string.please_enter_last_name), Toast.LENGTH_SHORT).show();
-        }else if(etEmailAddress.getText().toString().isEmpty() || !etEmailAddress.getText().toString().trim().matches(emailPattern)){
+        } else if (binding.etEmailAddress.getText().toString().isEmpty() || !binding.etEmailAddress.getText().toString().trim().matches(emailPattern)) {
             Toast.makeText(this, getResources().getString(R.string.please_enter_email), Toast.LENGTH_SHORT).show();
-        }else if(etDob.getText().toString().isEmpty()){
+        } else if (binding.etDob.getText().toString().isEmpty()) {
             Toast.makeText(this, getResources().getString(R.string.enter_DOB), Toast.LENGTH_SHORT).show();
-        }else if(selectedGender.isEmpty()){
+        } else if (selectedGender.isEmpty()) {
             Toast.makeText(this, getResources().getString(R.string.select_gender), Toast.LENGTH_SHORT).show();
-        } else if(PLAYER_ID.equals("")) {
+        } else if (PLAYER_ID.equals("")) {
             Toast.makeText(this, getResources().getString(R.string.restart_the_app), Toast.LENGTH_SHORT).show();
-        }else {
+        } else {
             try {
                 HashMap<String, File> fileMap = new HashMap<>();
                 if (!COMPRESSES_IMAGE.equals("")) {
@@ -359,24 +329,24 @@ public class SignUpActivity extends BaseFragment implements ApiManager.APIFETCHE
                 HashMap<String, String> map = new HashMap<>();
                 map.put("country_id", getIntent().getStringExtra("country_id"));
                 map.put("player_id", PLAYER_ID);
-                map.put("first_name", etFirstName.getText().toString());
-                map.put("last_name", etLastName.getText().toString());
-                map.put("user_gender",selectedGender);
-                map.put("dob",etDob.getText().toString());
+                map.put("first_name", binding.etFirstName.getText().toString());
+                map.put("last_name", binding.etLastName.getText().toString());
+                map.put("user_gender", selectedGender);
+                map.put("dob", binding.etDob.getText().toString());
                 map.put("phone", getIntent().getStringExtra("phone"));
-                map.put("email", etEmailAddress.getText().toString());
+                map.put("email", binding.etEmailAddress.getText().toString());
                 map.put("unique_no", "" + Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID));
                 map.put("package_name", "" + BuildConfig.APPLICATION_ID);
                 map.put("apk_version", BuildConfig.VERSION_NAME);
                 map.put("device", "1");
-                if(!etReferralCode.getText().toString().equals("")) {
-                    map.put("referral_code", etReferralCode.getText().toString());
+                if (!binding.etReferralCode.getText().toString().equals("")) {
+                    map.put("referral_code", binding.etReferralCode.getText().toString());
                 }
                 map.put("operating_system", "" + Build.VERSION.SDK_INT);
-                map.put("is_register","true");
+                map.put("is_register", "true");
                 if (!COMPRESSES_IMAGE.equals("")) {
                     apiManager._post_image_with_secreteonly(API_S.Tags.SIGN_UP, API_S.Endpoints.SIGN_UP, map, fileMap);
-                }else {
+                } else {
                     apiManager._post_with_secreteonly(API_S.Tags.SIGN_UP, API_S.Endpoints.SIGN_UP, map);
                 }
             } catch (Exception e) {
@@ -392,18 +362,18 @@ public class SignUpActivity extends BaseFragment implements ApiManager.APIFETCHE
 
     @Override
     public void onFetchComplete(Object script, String APINAME) {
-        switch (APINAME){
+        switch (APINAME) {
             case API_S.Tags.SIGN_UP:
                 progressDialog.hide();
                 ModelSignup modelSignupLogin = SingletonGson.getInstance().fromJson("" + script, ModelSignup.class);
                 sessionManager.setAccessToken("" + modelSignupLogin.getData().getAccess_token());
                 Toast.makeText(SignUpActivity.this, "" + modelSignupLogin.getMessage(), Toast.LENGTH_SHORT).show();
-                if(sessionManager.getAppConfig().getData().getGeneral_config().isUser_document()){
-                    Intent intent = new Intent(SignUpActivity.this,UploadDocumentActivity.class);
+                if (sessionManager.getAppConfig().getData().getGeneral_config().isUser_document()) {
+                    Intent intent = new Intent(SignUpActivity.this, UploadDocumentActivity.class);
                     intent.putExtra("for", "user");
                     startActivity(intent);
                     finish();
-                }else {
+                } else {
                     progressDialog.show();
                     try {
                         apiManager._post(API_S.Tags.USER_DETAILS, API_S.Endpoints.USER_DETAILS, null, sessionManager);
@@ -415,7 +385,7 @@ public class SignUpActivity extends BaseFragment implements ApiManager.APIFETCHE
             case API_S.Tags.USER_DETAILS:
                 progressDialog.hide();
                 ModelUserDetails modelUserDetails = SingletonGson.getInstance().fromJson("" + script, ModelUserDetails.class);
-                sessionManager.createLoginSession("" + modelUserDetails.getData().getDob(),"" + modelUserDetails.getData().getId(),
+                sessionManager.createLoginSession("" + modelUserDetails.getData().getDob(), "" + modelUserDetails.getData().getId(),
                         modelUserDetails.getData().getFirst_name(),
                         modelUserDetails.getData().getLast_name(),
                         modelUserDetails.getData().getEmail(),
@@ -428,8 +398,8 @@ public class SignUpActivity extends BaseFragment implements ApiManager.APIFETCHE
                         "" + modelUserDetails.getData().getAllow_other_smoker(),
                         "" + modelUserDetails.getData().getUserSignupType()
                         , ""
-                        ,modelUserDetails.getData().getCurrency()
-                        ,modelUserDetails.getData().getMobile_number());
+                        , modelUserDetails.getData().getCurrency()
+                        , modelUserDetails.getData().getMobile_number());
                 sessionManager.makUserLoggedIn();
                 try {
                     sessionManager.setcountryid(Integer.parseInt(modelUserDetails.getData().getCountry_id()));
@@ -445,7 +415,7 @@ public class SignUpActivity extends BaseFragment implements ApiManager.APIFETCHE
     @Override
     public void onFetchResultZero(String script, String APINAME) {
         progressDialog.hide();
-        Toast.makeText(this, ""+script, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "" + script, Toast.LENGTH_SHORT).show();
     }
 
     @Override

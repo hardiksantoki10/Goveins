@@ -28,7 +28,6 @@ import com.stripe.android.model.Token;
 import java.util.HashMap;
 
 
-import butterknife.ButterKnife;
 
 public class EnterCardDetailsActivity extends BaseActivity implements ApiManager.APIFETCHER, View.OnClickListener, TextWatcher {
 
@@ -55,7 +54,6 @@ public class EnterCardDetailsActivity extends BaseActivity implements ApiManager
     }
 
     private void initialization() {
-        ButterKnife.bind(this);
         sessionmanager = new SessionManager(EnterCardDetailsActivity.this);
         apiManagerNew = new ApiManager(this, this);
         progressDialog = new ProgressDialog(this);

@@ -37,9 +37,8 @@ import com.goviens.android.utils.SessionManager;
 import com.goviens.android.utils.SingletonGson;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-
-import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
+
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, MainFragment.OnFragmentInteractionListener
         , OfferFragment.OnFragmentInteractionListener, RidesFragment.OnFragmentInteractionListener, ProfileFragment.OnFragmentInteractionListener, ApiManager.APIFETCHER {
@@ -47,27 +46,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     private ActivityMainBinding mBinding;
     BottomNavigationView navigation;
     DrawerLayout drawerLayout;
-    ImageView menu;
 
-    TextView tvProfile;
-    LinearLayout linearWallet;
-    LinearLayout linearAddress;
-    LinearLayout linearDocument;
-    LinearLayout linearPastRides;
-    LinearLayout linearPaymentMethod;
-    LinearLayout linearRefer;
-    LinearLayout linearTerms;
-    LinearLayout linearCustomer;
-    LinearLayout linearEmergency;
-    LinearLayout linearBankDetails;
-    LinearLayout linearLogout;
 
-    CircleImageView imageUser;
-    TextView tvName;
 
-    private DrawerLayout mDrawerLayout;
+
     ActionBarDrawerToggle mDrawerToggle;
-    Toolbar toolbar;
 
 
     ApiManager apiManager;
@@ -84,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         mBinding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = mBinding.getRoot();          //Root xml or viewGroup will be a part of converted view over here
         setContentView(view);
+
         apiManager = new ApiManager(this,this);
         manager = new SessionManager(this);
         progressDialog = new ProgressDialog(this);
@@ -106,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 //        }
 
         clickListeners();
-        menu.setOnClickListener(new View.OnClickListener() {
+        mBinding.toolbar.menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 drawerLayout.openDrawer(Gravity.LEFT);
@@ -114,12 +98,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         });
 
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+        mBinding.drawerLayout.setDrawerListener(mDrawerToggle);
         setupDrawerToggle();
 
-        Glide.with(this).load(manager.getUserDetails().get(SessionManager.USER_IMAGE)).into(imageUser);
-        tvName.setText(manager.getUserDetails().get(SessionManager.USER_FIRST_NAME));
+        Glide.with(this).load(manager.getUserDetails().get(SessionManager.USER_IMAGE)).into(mBinding.userDetail.driverImage);
+        mBinding.userDetail.tvName.setText(manager.getUserDetails().get(SessionManager.USER_FIRST_NAME));
 
     }
 
@@ -136,15 +120,15 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
 
     void setupToolbar(){
-        toolbar = findViewById(R.id.toolbar_main);
-        setSupportActionBar(toolbar);
+
+        setSupportActionBar(mBinding.toolbar.toolbarMain);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        toolbar.setTitle(getResources().getString(R.string.find_a_ride));
+        mBinding.toolbar.toolbarMain.setTitle(getResources().getString(R.string.find_a_ride));
     }
 
 
     void setupDrawerToggle(){
-        mDrawerToggle = new ActionBarDrawerToggle(MainActivity.this,mDrawerLayout,toolbar,R.string.camera, R.string.alert);
+        mDrawerToggle = new ActionBarDrawerToggle(MainActivity.this,mBinding.drawerLayout,mBinding.toolbar.toolbarMain,R.string.camera, R.string.alert);
         //This is necessary to change the icon of the Drawer Toggle upon state change.
         mDrawerToggle.syncState();
     }
@@ -217,113 +201,113 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
 
     void clickListeners(){
-        tvProfile.setOnClickListener(new View.OnClickListener() {
+        mBinding.userDetail.tvProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mDrawerLayout.isDrawerOpen(GravityCompat.START)){
-                    mDrawerLayout.closeDrawers();
+                if(mBinding.drawerLayout.isDrawerOpen(GravityCompat.START)){
+                    mBinding.drawerLayout.closeDrawers();
                 }
                 navigation.getMenu().findItem(R.id.profile).setChecked(true);
-                toolbar.setTitle("Profile");
+                mBinding.toolbar.toolbarMain.setTitle("Profile");
                 loadFragment(new ProfileFragment());
             }
         });
-        linearWallet.setOnClickListener(new View.OnClickListener() {
+        mBinding.userDetail.linearWallet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mDrawerLayout.isDrawerOpen(GravityCompat.START)){
-                    mDrawerLayout.closeDrawers();
+                if(mBinding.drawerLayout.isDrawerOpen(GravityCompat.START)){
+                    mBinding.drawerLayout.closeDrawers();
                 }
                 startActivity(new Intent(MainActivity.this,WalletActivity.class));
             }
         });
-        linearAddress.setOnClickListener(new View.OnClickListener() {
+        mBinding.userDetail.linearAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mDrawerLayout.isDrawerOpen(GravityCompat.START)){
-                    mDrawerLayout.closeDrawers();
+                if(mBinding.drawerLayout.isDrawerOpen(GravityCompat.START)){
+                    mBinding.drawerLayout.closeDrawers();
                 }
                 startActivity(new Intent(MainActivity.this,SaveAddressActivity.class)
                         .putExtra("for", "1"));
             }
         });
-        linearCustomer.setOnClickListener(new View.OnClickListener() {
+        mBinding.userDetail.linearCustomer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mDrawerLayout.isDrawerOpen(GravityCompat.START)){
-                    mDrawerLayout.closeDrawers();
+                if(mBinding.drawerLayout.isDrawerOpen(GravityCompat.START)){
+                    mBinding.drawerLayout.closeDrawers();
                 }
                 startActivity(new Intent(MainActivity.this,ContactCustomerActivity.class));
             }
         });
-        linearPastRides.setOnClickListener(new View.OnClickListener() {
+        mBinding.userDetail.linearPastRides.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mDrawerLayout.isDrawerOpen(GravityCompat.START)){
-                    mDrawerLayout.closeDrawers();
+                if(mBinding.drawerLayout.isDrawerOpen(GravityCompat.START)){
+                    mBinding.drawerLayout.closeDrawers();
                 }
                 startActivity(new Intent(MainActivity.this,PastRidesActivity.class));
             }
         });
-        linearDocument.setOnClickListener(new View.OnClickListener() {
+        mBinding.userDetail.linearDocuments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mDrawerLayout.isDrawerOpen(GravityCompat.START)){
-                    mDrawerLayout.closeDrawers();
+                if(mBinding.drawerLayout.isDrawerOpen(GravityCompat.START)){
+                    mBinding.drawerLayout.closeDrawers();
                 }
                 startActivity(new Intent(MainActivity.this,UploadDocumentActivity.class)
                         .putExtra("for", "driver"));
             }
         });
-        linearPaymentMethod.setOnClickListener(new View.OnClickListener() {
+        mBinding.userDetail.linearPaymentMethod.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mDrawerLayout.isDrawerOpen(GravityCompat.START)){
-                    mDrawerLayout.closeDrawers();
+                if(mBinding.drawerLayout.isDrawerOpen(GravityCompat.START)){
+                    mBinding.drawerLayout.closeDrawers();
                 }
                 startActivity(new Intent(MainActivity.this,PaymentMethodActivity.class));
             }
         });
-        linearRefer.setOnClickListener(new View.OnClickListener() {
+        mBinding.userDetail.linearRefer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mDrawerLayout.isDrawerOpen(GravityCompat.START)){
-                    mDrawerLayout.closeDrawers();
+                if(mBinding.drawerLayout.isDrawerOpen(GravityCompat.START)){
+                    mBinding.drawerLayout.closeDrawers();
                 }
                 startActivity(new Intent(MainActivity.this,ReferActivity.class));
             }
         });
-        linearTerms.setOnClickListener(new View.OnClickListener() {
+        mBinding.userDetail.linearTerms.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mDrawerLayout.isDrawerOpen(GravityCompat.START)){
-                    mDrawerLayout.closeDrawers();
+                if(mBinding.drawerLayout.isDrawerOpen(GravityCompat.START)){
+                    mBinding.drawerLayout.closeDrawers();
                 }
                 startActivity(new Intent(MainActivity.this,TermsAndConditionActivity.class));
             }
         });
-        linearEmergency.setOnClickListener(new View.OnClickListener() {
+        mBinding.userDetail.linearEmergency.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mDrawerLayout.isDrawerOpen(GravityCompat.START)){
-                    mDrawerLayout.closeDrawers();
+                if(mBinding.drawerLayout.isDrawerOpen(GravityCompat.START)){
+                    mBinding.drawerLayout.closeDrawers();
                 }
                 Toast.makeText(MainActivity.this, "This is pending", Toast.LENGTH_SHORT).show();
             //    startActivity(new Intent(MainActivity.this,BankAccountActivity.class));
             }
         });
 
-        linearBankDetails.setOnClickListener(new View.OnClickListener() {
+        mBinding.userDetail.linearBankDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mDrawerLayout.isDrawerOpen(GravityCompat.START)){
-                    mDrawerLayout.closeDrawers();
+                if(mBinding.drawerLayout.isDrawerOpen(GravityCompat.START)){
+                    mBinding.drawerLayout.closeDrawers();
                 }
                 startActivity(new Intent(MainActivity.this,BankAccountActivity.class));
             }
         });
 
-        linearLogout.setOnClickListener(new View.OnClickListener() {
+        mBinding.userDetail.linearLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 manager.logoutUser();
@@ -346,13 +330,13 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             case R.id.Rides:
                 offer = false;
                 fragment = new RidesFragment();
-                toolbar.setTitle(getResources().getString(R.string.rides));
+                mBinding.toolbar.toolbarMain.setTitle(getResources().getString(R.string.rides));
                 break;
 
             case R.id.search:
                 offer = false;
                 fragment = new MainFragment();
-                toolbar.setTitle(getResources().getString(R.string.find_ride));
+                mBinding.toolbar.toolbarMain.setTitle(getResources().getString(R.string.find_ride));
                 break;
 
             case R.id.offer:
@@ -368,13 +352,13 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
-                                toolbar.setTitle(getResources().getString(R.string.offer_ride));
+                                mBinding.toolbar.toolbarMain.setTitle(getResources().getString(R.string.offer_ride));
                             }
                         });
                         builder.show();
                     }else {
                         fragment = new OfferFragment();
-                        toolbar.setTitle(getResources().getString(R.string.offer_ride));
+                        mBinding.toolbar.toolbarMain.setTitle(getResources().getString(R.string.offer_ride));
                     }
                 }else {
                     showAppmaintainanceDialog();
@@ -384,7 +368,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             case R.id.profile:
                 offer = false;
                 fragment = new ProfileFragment();
-                toolbar.setTitle(getResources().getString(R.string.profile));
+                mBinding.toolbar.toolbarMain.setTitle(getResources().getString(R.string.profile));
                 break;
         }
 

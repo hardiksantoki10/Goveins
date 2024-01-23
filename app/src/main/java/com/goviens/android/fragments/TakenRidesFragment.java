@@ -7,7 +7,6 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import android.view.LayoutInflater;
@@ -59,7 +58,6 @@ public class TakenRidesFragment extends Fragment implements ApiManager.APIFETCHE
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_taken_rides, container, false);
-        ButterKnife.bind(this, rootView);
         manager = new SessionManager(getActivity());
         apiManager = new ApiManager(this,getActivity());
         progressDialog = new ProgressDialog(getActivity());

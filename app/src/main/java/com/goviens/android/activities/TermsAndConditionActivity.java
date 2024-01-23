@@ -12,6 +12,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.goviens.android.R;
+import com.goviens.android.databinding.ActivitySignUpBinding;
+import com.goviens.android.databinding.ActivityTermsAndConditionBinding;
 import com.goviens.android.models.ModelTermsAndCondition;
 import com.goviens.android.utils.API_S;
 import com.goviens.android.utils.ApiManager;
@@ -21,30 +23,28 @@ import com.goviens.android.utils.SingletonGson;
 import java.util.HashMap;
 
 
-import butterknife.ButterKnife;
 
 public class TermsAndConditionActivity extends AppCompatActivity implements ApiManager.APIFETCHER {
 
-    ImageView bck;
-    TextView tc;
-    Button accept_t_and_c;
 
     private SessionManager sessionManager;
     private ApiManager apiManager;
     ProgressDialog progressDialog;
+    ActivityTermsAndConditionBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_terms_and_condition);
-        ButterKnife.bind(this);
+        binding = ActivityTermsAndConditionBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
         apiManager = new ApiManager(this,this);
         sessionManager = new SessionManager(this);
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage(this.getResources().getString(R.string.loading));
         progressDialog.setCancelable(false);
-        bck.setOnClickListener(new View.OnClickListener() {
+        binding.imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
@@ -94,7 +94,7 @@ public class TermsAndConditionActivity extends AppCompatActivity implements ApiM
             }
             ModelTermsAndCondition termsAndCondition = SingletonGson.getInstance().fromJson("" + script, ModelTermsAndCondition.class);
             if (termsAndCondition.getResult().equals("1")) {
-                tc.setText(Html.fromHtml("" + termsAndCondition.getData().getDescription()));
+                binding.tc.setText(Html.fromHtml("" + termsAndCondition.getData().getDescription()));
             }
         }catch (Exception e){
             e.printStackTrace();

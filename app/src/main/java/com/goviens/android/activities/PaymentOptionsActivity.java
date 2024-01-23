@@ -21,6 +21,8 @@ import android.widget.Toast;
 
 import com.goviens.android.BuildConfig;
 import com.goviens.android.R;
+import com.goviens.android.databinding.ActivityPaymentOptionsBinding;
+import com.goviens.android.databinding.ActivitySignUpBinding;
 import com.goviens.android.models.ModelAddMoney;
 import com.goviens.android.models.ModelGetPayment;
 import com.goviens.android.models.ModelIntouch;
@@ -38,35 +40,32 @@ import java.util.HashMap;
 import java.util.List;
 
 
-import butterknife.ButterKnife;
 
 public class PaymentOptionsActivity extends AppCompatActivity implements ApiManager.APIFETCHER {
 
-    RelativeLayout relativeStripe;
-    RelativeLayout relativePaypal;
-    RelativeLayout relativeMonet;
-    RelativeLayout relativeIntouch;
-    RelativeLayout relativeBankTransfer;
     ApiManager manager;
     SessionManager sessionManager;
     String amt;
 
+    Spinner spinnerOperator;
+
     String Operator = "";
     String FROM;
 
-    Spinner spinnerOperator;
-    ImageView imgBack;
     ProgressDialog progressDialog;
     ModelOperatorList modelOperatorList;
 
     List<String> operatorList;
     ModelGetPayment modelGetPayment;
 
+    ActivityPaymentOptionsBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        binding = ActivityPaymentOptionsBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         setContentView(R.layout.activity_payment_options);
-        ButterKnife.bind(this);
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage(this.getResources().getString(R.string.loading));
         progressDialog.setCancelable(false);
@@ -101,31 +100,31 @@ public class PaymentOptionsActivity extends AppCompatActivity implements ApiMana
                 e.printStackTrace();
             }
         }
-        relativePaypal.setOnClickListener(new View.OnClickListener() {
+        binding.relativePaypal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openDialogForPaypalAddMoney(v);
             }
         });
-        relativeStripe.setOnClickListener(new View.OnClickListener() {
+        binding.relativeStripe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openDialogForStripeAddMoney(v);
             }
         });
-        relativeBankTransfer.setOnClickListener(new View.OnClickListener() {
+        binding.relativeBankTransfer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openDialogForPayout(v);
             }
         });
-        imgBack.setOnClickListener(new View.OnClickListener() {
+        binding.imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-        relativeMonet.setOnClickListener(new View.OnClickListener() {
+        binding.relativeMonet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(FROM.equals("payout")){
@@ -135,7 +134,7 @@ public class PaymentOptionsActivity extends AppCompatActivity implements ApiMana
                 }
             }
         });
-        relativeIntouch.setOnClickListener(new View.OnClickListener() {
+        binding.relativeIntouch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(FROM.equals("payout")){
@@ -672,16 +671,16 @@ public class PaymentOptionsActivity extends AppCompatActivity implements ApiMana
                 modelGetPayment = SingletonGson.getInstance().fromJson("" + script, ModelGetPayment.class);
                 for (int i = 0; i < modelGetPayment.getData().getGateway().size(); i++) {
                     if (modelGetPayment.getData().getGateway().get(i).equals("PAYPAL")) {
-                        relativePaypal.setVisibility(View.VISIBLE);
+                        binding.relativePaypal.setVisibility(View.VISIBLE);
                     }
                     if (modelGetPayment.getData().getGateway().get(i).equals("INTOUCHGROUP")) {
-                        relativeIntouch.setVisibility(View.VISIBLE);
+                        binding.relativeIntouch.setVisibility(View.VISIBLE);
                     }
                     if (modelGetPayment.getData().getGateway().get(i).equals("Stripe")) {
-                        relativeStripe.setVisibility(View.VISIBLE);
+                        binding.relativeStripe.setVisibility(View.VISIBLE);
                     }
                     if (modelGetPayment.getData().getGateway().get(i).equals("MONETBIL")) {
-                        relativeMonet.setVisibility(View.VISIBLE);
+                        binding.relativeMonet.setVisibility(View.VISIBLE);
                     }
                 }
             } else if (APINAME.equals(API_S.Tags.GET_CASHOUT_METHOD)) {
@@ -690,13 +689,13 @@ public class PaymentOptionsActivity extends AppCompatActivity implements ApiMana
                 modelGetPayment = SingletonGson.getInstance().fromJson("" + script, ModelGetPayment.class);
                 for (int i = 0; i < modelGetPayment.getData().getGateway().size(); i++) {
                     if (modelGetPayment.getData().getGateway().get(i).equals("Bank Transfer")) {
-                        relativeBankTransfer.setVisibility(View.VISIBLE);
+                        binding.relativeBankTransfer.setVisibility(View.VISIBLE);
                     }
                     if (modelGetPayment.getData().getGateway().get(i).equals("INTOUCHGROUP")) {
-                        relativeIntouch.setVisibility(View.VISIBLE);
+                        binding.relativeIntouch.setVisibility(View.VISIBLE);
                     }
                     if (modelGetPayment.getData().getGateway().get(i).equals("MONETBIL")) {
-                        relativeMonet.setVisibility(View.VISIBLE);
+                        binding.relativeMonet.setVisibility(View.VISIBLE);
                     }
                 }
 

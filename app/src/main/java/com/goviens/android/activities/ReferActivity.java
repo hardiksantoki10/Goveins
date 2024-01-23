@@ -12,6 +12,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.goviens.android.R;
+import com.goviens.android.databinding.ActivityReferBinding;
+import com.goviens.android.databinding.ActivitySignUpBinding;
 import com.goviens.android.models.ModelReferral;
 import com.goviens.android.utils.API_S;
 import com.goviens.android.utils.ApiManager;
@@ -19,30 +21,31 @@ import com.goviens.android.utils.SessionManager;
 import com.goviens.android.utils.SingletonGson;
 
 
-import butterknife.ButterKnife;
 
 public class ReferActivity extends AppCompatActivity implements ApiManager.APIFETCHER {
 
 
-    TextView etReferralCode;
-    Button btnShare;
-    ImageView imgBack;
     ModelReferral modelReferral;
     ApiManager manager;
     SessionManager sessionManager;
     ProgressDialog progressDialog;
 
+    ActivityReferBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        binding = ActivityReferBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
         setContentView(R.layout.activity_refer);
-        ButterKnife.bind(this);
         manager = new ApiManager(this, this);
         sessionManager = new SessionManager(this);
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage(this.getResources().getString(R.string.loading));
         progressDialog.setCancelable(false);
-        btnShare.setOnClickListener(new View.OnClickListener() {
+        binding.btnShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
@@ -52,7 +55,7 @@ public class ReferActivity extends AppCompatActivity implements ApiManager.APIFE
                 startActivity(Intent.createChooser(sharingIntent, "Share via"));
             }
         });
-        imgBack.setOnClickListener(new View.OnClickListener() {
+        binding.imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
@@ -85,7 +88,7 @@ public class ReferActivity extends AppCompatActivity implements ApiManager.APIFE
             progressDialog.hide();
         }
         modelReferral = SingletonGson.getInstance().fromJson(""+script, ModelReferral.class);
-        etReferralCode.setText(modelReferral.getData().getRefer_code());
+        binding.etReferralCode.setText(modelReferral.getData().getRefer_code());
     }
 
     @Override

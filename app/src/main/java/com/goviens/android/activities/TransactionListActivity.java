@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.goviens.android.R;
+import com.goviens.android.databinding.ActivitySignUpBinding;
+import com.goviens.android.databinding.ActivityTransactionListBinding;
 import com.goviens.android.models.ModelPayoutHistory;
 import com.goviens.android.models.ModelWallet;
 import com.goviens.android.utils.API_S;
@@ -25,7 +27,6 @@ import com.mindorks.placeholderview.annotations.View;
 import java.util.HashMap;
 
 
-import butterknife.ButterKnife;
 
 public class TransactionListActivity extends AppCompatActivity implements ApiManager.APIFETCHER {
 
@@ -35,13 +36,18 @@ public class TransactionListActivity extends AppCompatActivity implements ApiMan
     SessionManager manager;
     ModelWallet modelWallet;
     ModelPayoutHistory payoutHistory;
-    ImageView imgBack;
     String from;
+
+    ActivityTransactionListBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_transaction_list);
-        ButterKnife.bind(this);
+
+        binding = ActivityTransactionListBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+
         apiManager = new ApiManager(this,this);
         manager = new SessionManager(this);
         progressDialog = new ProgressDialog(this);
@@ -82,7 +88,7 @@ public class TransactionListActivity extends AppCompatActivity implements ApiMan
                 }
             }
         }
-        imgBack.setOnClickListener(new android.view.View.OnClickListener() {
+        binding.imgBack.setOnClickListener(new android.view.View.OnClickListener() {
             @Override
             public void onClick(android.view.View v) {
                 finish();

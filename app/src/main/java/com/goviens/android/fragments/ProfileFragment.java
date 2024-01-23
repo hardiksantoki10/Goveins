@@ -26,7 +26,6 @@ import com.goviens.android.activities.EditProfileActivity;
 import com.goviens.android.utils.SessionManager;
 
 
-import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
@@ -67,7 +66,6 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
-        ButterKnife.bind(this, rootView);
         sessionManager = new SessionManager(getActivity());
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage(this.getResources().getString(R.string.loading));

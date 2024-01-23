@@ -6,7 +6,6 @@ import androidx.appcompat.widget.AppCompatRatingBar;
 import androidx.core.app.ActivityCompat;
 
 
-import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import android.Manifest;
@@ -26,6 +25,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.goviens.android.R;
+import com.goviens.android.databinding.ActivityProfileBinding;
+import com.goviens.android.databinding.ActivitySignUpBinding;
 import com.goviens.android.models.ModelProfileDetails;
 import com.goviens.android.models.ModelRequest;
 import com.goviens.android.utils.API_S;
@@ -38,30 +39,8 @@ import java.util.HashMap;
 
 public class ProfileActivity extends AppCompatActivity implements ApiManager.APIFETCHER {
 
-    CircleImageView imgProfile;
-    AppCompatRatingBar rating;
-    RelativeLayout relativeDoc;
-    ImageView imgMessage;
-    ImageView imgCall;
-    TextView tvPhone;
-    TextView tvTotalRides;
-    TextView tvMemberSince;
-    TextView tvDate;
-    TextView tvSeat;
-    TextView tvAmt;
-    TextView tvStartTime;
-    TextView tvEndTime;
-    TextView tvFrom;
-    TextView tvTo;
-    TextView tvPaymentMethod;
-    LinearLayout linearRideDetails;
-    LinearLayout linearBtn;
-    Button btnAccept;
-    Button btnReject;
     View view;
-    TextView tvName;
 
-    ScrollView scrollView;
 
     ModelProfileDetails profileDetails;
     ApiManager manager;
@@ -70,12 +49,15 @@ public class ProfileActivity extends AppCompatActivity implements ApiManager.API
 
     String[] PERMISSIONS = {Manifest.permission.CALL_PHONE};
 
-
+    ActivityProfileBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        binding = ActivityProfileBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+
         setContentView(R.layout.activity_profile);
-        ButterKnife.bind(this);
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage(this.getResources().getString(R.string.loading));
         progressDialog.setCancelable(false);
@@ -84,7 +66,7 @@ public class ProfileActivity extends AppCompatActivity implements ApiManager.API
         profileDetails = SingletonGson.getInstance().fromJson(getIntent().getStringExtra("script"), ModelProfileDetails.class);
         setData();
 
-        imgCall.setOnClickListener(new View.OnClickListener() {
+        binding.imgCall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(getIntent() != null) {
@@ -115,7 +97,7 @@ public class ProfileActivity extends AppCompatActivity implements ApiManager.API
             }
         });
 
-        imgMessage.setOnClickListener(new View.OnClickListener() {
+        binding.imgMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(getIntent() != null) {
@@ -162,72 +144,72 @@ public class ProfileActivity extends AppCompatActivity implements ApiManager.API
     }
     void setData(){
         try {
-            rating.setEnabled(false);
-            Glide.with(this).load(profileDetails.getData().getProfileimage()).into(imgProfile);
-            rating.setRating(Float.parseFloat(profileDetails.getData().getRating()));
+            binding.rating.setEnabled(false);
+            Glide.with(this).load(profileDetails.getData().getProfileimage()).into(binding.profileImg);
+            binding.rating.setRating(Float.parseFloat(profileDetails.getData().getRating()));
             if(getIntent() != null) {
                 if (getIntent().getStringExtra("search") != null) {
-                    tvPhone.setText("**********");
+                    binding.tvPhone.setText("**********");
                     messageDialog("");
                 }else if(getIntent().getStringExtra("driver") != null) {
                     if(profileDetails.getData().getPhone().equals("")){
-                        tvPhone.setText("**********");
+                        binding.tvPhone.setText("**********");
                         messageDialog(profileDetails.getData().getPhone_number_visiblity());
                     }else {
-                        tvPhone.setText("" + profileDetails.getData().getPhone());
+                        binding.tvPhone.setText("" + profileDetails.getData().getPhone());
                     }
                 }else {
                     if(profileDetails.getData().getUserdetails().getPhone().equals("")){
-                        tvPhone.setText("**********");
+                        binding.tvPhone.setText("**********");
                         messageDialog(profileDetails.getData().getUserdetails().getPhone_number_visiblity());
                     }else {
-                        tvPhone.setText("" + profileDetails.getData().getUserdetails().getPhone());
+                        binding.tvPhone.setText("" + profileDetails.getData().getUserdetails().getPhone());
                     }
                 }
             }else {
                 if(profileDetails.getData().getUserdetails().getPhone().equals("")){
-                    tvPhone.setText("**********");
+                    binding.tvPhone.setText("**********");
                     messageDialog(profileDetails.getData().getUserdetails().getPhone_number_visiblity());
                 }else {
-                    tvPhone.setText("" + profileDetails.getData().getUserdetails().getPhone());
+                    binding.tvPhone.setText("" + profileDetails.getData().getUserdetails().getPhone());
                 }
             }
-            tvTotalRides.setText(""+profileDetails.getData().getTotal_rides());
-            tvName.setText(profileDetails.getData().getName());
-            tvMemberSince.setText(AppUtils.getDateWithYearViaTimestamp(""+profileDetails.getData().getMember_since()));
+            binding.tvTotalRides.setText(""+profileDetails.getData().getTotal_rides());
+            binding.tvName.setText(profileDetails.getData().getName());
+            binding.tvMemberSince.setText(AppUtils.getDateWithYearViaTimestamp(""+profileDetails.getData().getMember_since()));
             if(profileDetails.getData().getDocument_verification_status() == 1){
-                relativeDoc.setVisibility(View.VISIBLE);
+                binding.relativeDocument.setVisibility(View.VISIBLE);
             }else {
-                relativeDoc.setVisibility(View.GONE);
+                binding.relativeDocument.setVisibility(View.GONE);
             }
             if(getIntent().getStringExtra("for")!= null) {
                 if (getIntent().getStringExtra("for").equals("0")) {
-                    linearRideDetails.setVisibility(View.VISIBLE);
-                    linearBtn.setVisibility(View.VISIBLE);
+                    binding.linearRideDetails.setVisibility(View.VISIBLE);
+                    binding.linearBtn.setVisibility(View.VISIBLE);
                     view.setVisibility(View.VISIBLE);
-                    tvDate.setText(AppUtils.getDateTimeInDayFormat(profileDetails.getData().getUserdetails().getStart_timestamp()));
-                    tvSeat.setText(profileDetails.getData().getUserdetails().getNo_of_seats() + " "+getResources().getString(R.string.seats));
-                    tvAmt.setText(profileDetails.getData().getUserdetails().getTotal_amount());
-                    tvStartTime.setText(AppUtils.getTimeViaTimestamp(profileDetails.getData().getUserdetails().getStart_timestamp()));
-                    tvEndTime.setText(AppUtils.getTimeViaTimestamp(profileDetails.getData().getUserdetails().getEnd_timestamp()));
-                    tvFrom.setText(profileDetails.getData().getUserdetails().getStart_location());
-                    tvTo.setText(profileDetails.getData().getUserdetails().getDrop_location());
+                    binding.tvDt.setText(AppUtils.getDateTimeInDayFormat(profileDetails.getData().getUserdetails().getStart_timestamp()));
+                    binding.tvSeat.setText(profileDetails.getData().getUserdetails().getNo_of_seats() + " "+getResources().getString(R.string.seats));
+                    binding.tvAmt.setText(profileDetails.getData().getUserdetails().getTotal_amount());
+                    binding.tvStartTime.setText(AppUtils.getTimeViaTimestamp(profileDetails.getData().getUserdetails().getStart_timestamp()));
+                    binding.tvEndTime.setText(AppUtils.getTimeViaTimestamp(profileDetails.getData().getUserdetails().getEnd_timestamp()));
+                    binding.tvFrom.setText(profileDetails.getData().getUserdetails().getStart_location());
+                    binding.tvTo.setText(profileDetails.getData().getUserdetails().getDrop_location());
                     if (profileDetails.getData().getUserdetails().getPayment_type() == 2) {
-                        tvPaymentMethod.setText(getResources().getString(R.string.cash));
+                        binding.tvPaymentMethod.setText(getResources().getString(R.string.cash));
                     } else if(profileDetails.getData().getUserdetails().getPayment_type() == 3) {
-                        tvPaymentMethod.setText(getResources().getString(R.string.wallet_at_pickup));
+                        binding.tvPaymentMethod.setText(getResources().getString(R.string.wallet_at_pickup));
                     }else {
-                        tvPaymentMethod.setText(getResources().getString(R.string.wallet));
+                        binding.tvPaymentMethod.setText(getResources().getString(R.string.wallet));
                     }
                     if (getIntent().getStringExtra("rider").equals("1")) {
-                        linearBtn.setVisibility(View.GONE);
+                        binding.linearBtn.setVisibility(View.GONE);
                         view.setVisibility(View.GONE);
-                        scrollView.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+                        binding.scroll.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
                     } else {
-                        linearBtn.setVisibility(View.VISIBLE);
+                        binding.linearBtn.setVisibility(View.VISIBLE);
                         view.setVisibility(View.VISIBLE);
                     }
-                    btnAccept.setOnClickListener(new View.OnClickListener() {
+                    binding.btnAccept.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             try {
@@ -244,7 +226,7 @@ public class ProfileActivity extends AppCompatActivity implements ApiManager.API
                             }
                         }
                     });
-                    btnReject.setOnClickListener(new View.OnClickListener() {
+                    binding.btnReject.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             try {
@@ -262,13 +244,13 @@ public class ProfileActivity extends AppCompatActivity implements ApiManager.API
                         }
                     });
                 } else {
-                    linearRideDetails.setVisibility(View.GONE);
-                    linearBtn.setVisibility(View.GONE);
+                    binding.linearRideDetails.setVisibility(View.GONE);
+                    binding.linearBtn.setVisibility(View.GONE);
                     view.setVisibility(View.GONE);
                 }
             }else {
-                linearRideDetails.setVisibility(View.GONE);
-                linearBtn.setVisibility(View.GONE);
+                binding.linearRideDetails.setVisibility(View.GONE);
+                binding.linearBtn.setVisibility(View.GONE);
                 view.setVisibility(View.GONE);
             }
         }catch (Exception e){

@@ -8,6 +8,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.goviens.android.R;
+import com.goviens.android.databinding.ActivityReceiptBinding;
+import com.goviens.android.databinding.ActivitySignUpBinding;
 import com.goviens.android.models.ModelReceiptDriver;
 import com.goviens.android.models.ModelReceiptUser;
 import com.goviens.android.utils.SingletonGson;
@@ -17,26 +19,27 @@ import com.mindorks.placeholderview.annotations.Resolve;
 import com.mindorks.placeholderview.annotations.View;
 
 
-import butterknife.ButterKnife;
 
 public class ReceiptActivity extends AppCompatActivity {
 
     PlaceHolderView placeHolderView;
-    LinearLayout llOk;
-    TextView tvReceipt;
     String user_receipt;
     ModelReceiptDriver modelReceiptDriver;
-    ModelReceiptUser modelReceiptUser; 
+    ModelReceiptUser modelReceiptUser;
+
+    ActivityReceiptBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_receipt);
-        ButterKnife.bind(this);
+        binding = ActivityReceiptBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
         user_receipt = getIntent().getStringExtra("user_receipt");
         if(user_receipt != null) {
             if (user_receipt.equals("0")) {
                 modelReceiptDriver = SingletonGson.getInstance().fromJson(getIntent().getStringExtra("script"), ModelReceiptDriver.class);
-                tvReceipt.setText(modelReceiptDriver.getData().getDriver_Receipt().getHeader().getCenter_text());
+                binding.tvReceipt.setText(modelReceiptDriver.getData().getDriver_Receipt().getHeader().getCenter_text());
                 for (int i = 0; i < modelReceiptDriver.getData().getDriver_Receipt().getBody().getRide_details().size(); i++) {
                     placeHolderView.addView(new HolderReceipt(modelReceiptDriver.getData().getDriver_Receipt().getBody().getRide_details().get(i)));
                 }
@@ -46,7 +49,7 @@ public class ReceiptActivity extends AppCompatActivity {
                 placeHolderView.addView(new HolderFooter(modelReceiptDriver.getData().getDriver_Receipt().getFooter()));
             } else {
                 modelReceiptUser = SingletonGson.getInstance().fromJson(getIntent().getStringExtra("script"), ModelReceiptUser.class);
-                tvReceipt.setText(modelReceiptUser.getData().getUser_Receipt().getHeader().getCenter_text());
+                binding.tvReceipt.setText(modelReceiptUser.getData().getUser_Receipt().getHeader().getCenter_text());
                 for (int i = 0; i < modelReceiptUser.getData().getUser_Receipt().getBody().getRide_details().size(); i++) {
                     placeHolderView.addView(new HolderUserReceipt(modelReceiptUser.getData().getUser_Receipt().getBody().getRide_details().get(i)));
                 }
@@ -56,7 +59,7 @@ public class ReceiptActivity extends AppCompatActivity {
                 placeHolderView.addView(new HolderUserFooter(modelReceiptUser.getData().getUser_Receipt().getFooter()));
             }
         }
-        llOk.setOnClickListener(new android.view.View.OnClickListener() {
+        binding.lldoneReceipt.setOnClickListener(new android.view.View.OnClickListener() {
             @Override
             public void onClick(android.view.View v) {
                 finish();

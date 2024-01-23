@@ -16,6 +16,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.goviens.android.R;
+import com.goviens.android.databinding.ActivitySearchRideDetailsBinding;
+import com.goviens.android.databinding.ActivitySignUpBinding;
 import com.goviens.android.models.ModelCheckout;
 import com.goviens.android.models.ModelConfirm;
 import com.goviens.android.models.ModelProfileDetails;
@@ -33,7 +35,6 @@ import com.mindorks.placeholderview.annotations.Resolve;
 import java.util.HashMap;
 
 
-import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SearchRideDetailsActivity extends AppCompatActivity implements ApiManager.APIFETCHER{
@@ -42,58 +43,33 @@ public class SearchRideDetailsActivity extends AppCompatActivity implements ApiM
     ApiManager manager;
     SessionManager sessionManager;
     ModelSearchDetails searchDetails;
-    LinearLayout linearAc;
-    LinearLayout linearFemale;
-    TextView tvDt;
-    TextView tvAmt;
-    TextView tvStartTime;
-    TextView tvEndTime;
-    TextView tvFrom;
-    TextView tvTo;
-    CircleImageView imgProfile;
-    TextView tvDriverName;
-    TextView tvDriverRating;
-    TextView tvPaymentMethod;
-    TextView TvPaymentMethodSelection;
-    LinearLayout linearDriver;
-    CircleImageView imgVehicle;
-    TextView tvVehicleName;
-    TextView tvVehicleNumber;
-    TextView tvVehicleColor;
     PlaceHolderView placeHolderRiders;
-    TextView tvInstruction;
-    ImageView imgBack;
-    Button btnConfirm;
-    LinearLayout linearRiders;
-    TextView tvAvailableSeats;
 
-    TextView tvLabelTotalPrice;
-
-    TextView tvTotalSeats;
     String cashAmt;
     ProgressDialog progressDialog;
     String payment_action = "0", payment_status = "0";
 
+    ActivitySearchRideDetailsBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_ride_details);
-        ButterKnife.bind(this);
+
+        binding = ActivitySearchRideDetailsBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
         manager = new ApiManager(this,this);
         sessionManager = new SessionManager(this);
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage(this.getResources().getString(R.string.loading));
         progressDialog.setCancelable(false);
         cashAmt = getIntent().getStringExtra("payment_type_id");
-//        if(cashAmt.equals("1")){
-//            TvPaymentMethodSelection.setText("Cash Only");
-//            payment_action = "2";
-//        }
-        tvLabelTotalPrice.setText(getResources().getString(R.string.total_price_for)+" "+getIntent().getStringExtra("no_of_seats")+" "+getResources().getString(R.string.seats));
-        btnConfirm.setText(getResources().getString(R.string.confirm_booking_for)+" "+getIntent().getStringExtra("no_of_seats")+" "+getResources().getString(R.string.seats));
+
+        binding.tvLabelTotalPrice.setText(getResources().getString(R.string.total_price_for)+" "+getIntent().getStringExtra("no_of_seats")+" "+getResources().getString(R.string.seats));
+        binding.btnConfirmBooking.setText(getResources().getString(R.string.confirm_booking_for)+" "+getIntent().getStringExtra("no_of_seats")+" "+getResources().getString(R.string.seats));
         searchDetails = SingletonGson.getInstance().fromJson(getIntent().getStringExtra("script"), ModelSearchDetails.class);
         setData();
-        linearDriver.setOnClickListener(new View.OnClickListener() {
+        binding.linearDriver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
@@ -110,7 +86,7 @@ public class SearchRideDetailsActivity extends AppCompatActivity implements ApiM
                 }
             }
         });
-        TvPaymentMethodSelection.setOnClickListener(new View.OnClickListener() {
+        binding.tvPaymentMethodSelection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivityForResult(new Intent(SearchRideDetailsActivity.this,PaymentMethodActivity.class)
@@ -118,7 +94,7 @@ public class SearchRideDetailsActivity extends AppCompatActivity implements ApiM
                         .putExtra("balance",searchDetails.getData().getWallet_balance()), 100);
             }
         });
-        btnConfirm.setOnClickListener(new View.OnClickListener() {
+        binding.btnConfirmBooking.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(payment_action.equals("0")){
@@ -128,7 +104,7 @@ public class SearchRideDetailsActivity extends AppCompatActivity implements ApiM
                 }
             }
         });
-        imgBack.setOnClickListener(new View.OnClickListener() {
+        binding.imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
@@ -167,38 +143,40 @@ public class SearchRideDetailsActivity extends AppCompatActivity implements ApiM
     void setData(){
         try {
             if (searchDetails.getData().isAc_ride()) {
-                linearAc.setVisibility(View.VISIBLE);
+                binding.linearAc.setVisibility(View.VISIBLE);
             } else {
-                linearAc.setVisibility(View.GONE);
+                binding.linearAc.setVisibility(View.GONE);
             }
             if (searchDetails.getData().isOnly_females()) {
-                linearFemale.setVisibility(View.VISIBLE);
+                binding.linearFemale.setVisibility(View.VISIBLE);
             } else {
-                linearFemale.setVisibility(View.GONE);
+                binding.linearFemale.setVisibility(View.GONE);
             }
             if (searchDetails.getData().getAccept_users().size() != 0) {
-                linearRiders.setVisibility(android.view.View.VISIBLE);
+                binding.linearRiders.setVisibility(android.view.View.VISIBLE);
                 for (int i = 0; i < searchDetails.getData().getAccept_users().size(); i++) {
                     placeHolderRiders.addView(new HolderRiders(searchDetails.getData().getAccept_users().get(i)));
                 }
             }
-            tvTotalSeats.setText(""+ searchDetails.getData().getTotal_seats());
-            tvAvailableSeats.setText(""+searchDetails.getData().getAvailable_seats());
-            tvDt.setText(AppUtils.getDateTimeInFormat(searchDetails.getData().getRide_timestamp()));
-            tvAmt.setText(getIntent().getStringExtra("amt"));
-            tvStartTime.setText(AppUtils.getTimeViaTimestamp(searchDetails.getData().getRide_details_list().get(0).getRide_timestamp()));
-            tvEndTime.setText(AppUtils.getTimeViaTimestamp(searchDetails.getData().getRide_details_list().get(1).getRide_timestamp()));
-            tvFrom.setText(searchDetails.getData().getRide_details_list().get(0).getLocation());
-            tvTo.setText(searchDetails.getData().getRide_details_list().get(1).getLocation());
-            Glide.with(this).load(searchDetails.getData().getOffer_user().getImage()).into(imgProfile);
-            tvDriverName.setText(searchDetails.getData().getOffer_user().getName());
-            tvDriverRating.setText(searchDetails.getData().getOffer_user().getRating());
-            tvPaymentMethod.setText(searchDetails.getData().getPayment_type());
-            Glide.with(this).load(searchDetails.getData().getOffer_user_vehicle().getVehicle_image()).into(imgVehicle);
-            tvVehicleName.setText(searchDetails.getData().getOffer_user_vehicle().getVehicle_name());
-            tvVehicleNumber.setText(searchDetails.getData().getOffer_user_vehicle().getVehicle_number());
-            tvVehicleColor.setText(searchDetails.getData().getOffer_user_vehicle().getVehicle_color());
-            tvInstruction.setText(searchDetails.getData().getInstructions());
+            binding.tvTotalSeats.setText(""+ searchDetails.getData().getTotal_seats());
+            binding.tvAvailableSeats.setText(""+searchDetails.getData().getAvailable_seats());
+            binding.tvDt.setText(AppUtils.getDateTimeInFormat(searchDetails.getData().getRide_timestamp()));
+            binding.tvAmt.setText(getIntent().getStringExtra("amt"));
+            binding.tvStartTime.setText(AppUtils.getTimeViaTimestamp(searchDetails.getData().getRide_details_list().get(0).getRide_timestamp()));
+            binding.tvEndTime.setText(AppUtils.getTimeViaTimestamp(searchDetails.getData().getRide_details_list().get(1).getRide_timestamp()));
+            binding.tvFrom.setText(searchDetails.getData().getRide_details_list().get(0).getLocation());
+            binding.tvTo.setText(searchDetails.getData().getRide_details_list().get(1).getLocation());
+            Glide.with(this).load(searchDetails.getData().getOffer_user().getImage()).into(binding.imgProfile);
+
+            // Need to check if data not Display Hardik
+            ///binding.tvDriverName.setText(searchDetails.getData().getOffer_user().getName());
+            ///binding.tvDriverRating.setText(searchDetails.getData().getOffer_user().getRating());
+            binding.tvPaymentMethod.setText(searchDetails.getData().getPayment_type());
+            Glide.with(this).load(searchDetails.getData().getOffer_user_vehicle().getVehicle_image()).into(binding.imgVehicle);
+            binding.tvVehicleName.setText(searchDetails.getData().getOffer_user_vehicle().getVehicle_name());
+            binding.tvVehicleNumber.setText(searchDetails.getData().getOffer_user_vehicle().getVehicle_number());
+            binding.tvVehicleColor.setText(searchDetails.getData().getOffer_user_vehicle().getVehicle_color());
+            binding.tvInstruction.setText(searchDetails.getData().getInstructions());
         }catch (Exception e){
             e.printStackTrace();
             Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
@@ -211,13 +189,13 @@ public class SearchRideDetailsActivity extends AppCompatActivity implements ApiM
         if(resultCode == RESULT_OK){
             payment_action = data.getStringExtra("payment");
             if(payment_action.equals("1")){
-                TvPaymentMethodSelection.setText(getResources().getString(R.string.wallet));
+                binding.tvPaymentMethodSelection.setText(getResources().getString(R.string.wallet));
                 payment_status = "1";
             }else if(payment_action.equals("2")){
-                TvPaymentMethodSelection.setText(getResources().getString(R.string.cash));
+                binding.tvPaymentMethodSelection.setText(getResources().getString(R.string.cash));
                 payment_status = "0";
             }else if(payment_action.equals("3")){
-                TvPaymentMethodSelection.setText(getResources().getString(R.string.wallet_at_pickup));
+                binding.tvPaymentMethodSelection.setText(getResources().getString(R.string.wallet_at_pickup));
                 payment_status = "0";
             }
         }

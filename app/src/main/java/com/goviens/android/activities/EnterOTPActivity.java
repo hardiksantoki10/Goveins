@@ -32,26 +32,18 @@ import com.goviens.android.utils.SingletonGson;
 
 import java.util.HashMap;
 
-
-import butterknife.ButterKnife;
-
 public class EnterOTPActivity extends AppCompatActivity implements ApiManager.APIFETCHER, TextWatcher {
-
 
     private ActivityEnterOtpBinding mBinding;
 
     ApiManager manager;
 
-
     String forr = "";
-
 
     String isRegister = "";
     private SessionManager sessionManager;
 
     ProgressDialog progressDialog;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +51,6 @@ public class EnterOTPActivity extends AppCompatActivity implements ApiManager.AP
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_enter_otp);
 
 
-        ButterKnife.bind(this);
         manager = new ApiManager(this, this);
         sessionManager = new SessionManager(this);
         progressDialog = new ProgressDialog(this);

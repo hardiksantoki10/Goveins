@@ -33,7 +33,6 @@ import com.mindorks.placeholderview.annotations.View;
 import java.util.HashMap;
 
 
-import butterknife.ButterKnife;
 
 public class CardListActivity extends BaseActivity implements ApiManager.APIFETCHER {
 
@@ -86,7 +85,7 @@ public class CardListActivity extends BaseActivity implements ApiManager.APIFETC
         });
 
 
-        mBinding.addNew.setOnClickListener(view -> {
+        mBinding.addNew.setOnClickListener(views -> {
             startActivity(new Intent(CardListActivity.this, EnterCardDetailsActivity.class));
 
 

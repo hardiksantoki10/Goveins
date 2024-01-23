@@ -18,6 +18,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.goviens.android.R;
+import com.goviens.android.databinding.ActivityPastTakenRideDetailsBinding;
+import com.goviens.android.databinding.ActivitySignUpBinding;
 import com.goviens.android.models.ModelProfileDetails;
 import com.goviens.android.models.ModelReceiptUser;
 import com.goviens.android.models.ModelTakenRideDetails;
@@ -34,7 +36,6 @@ import com.mindorks.placeholderview.annotations.Resolve;
 import java.util.HashMap;
 
 
-import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class PastTakenRideDetailsActivity extends AppCompatActivity implements ApiManager.APIFETCHER {
@@ -44,35 +45,7 @@ public class PastTakenRideDetailsActivity extends AppCompatActivity implements A
 
     ModelReceiptUser receiptUser;
 
-    Button btnReceipt;
-    Button btnRating;
-    TextView tvDate;
-    TextView tvAmt;
-    TextView tvOTP;
-    LinearLayout linearFemale;
-    LinearLayout linearAc;
-    TextView tvStartTime;
-    TextView tvEndTime;
-    TextView tvFrom;
-    TextView tvTo;
-    LinearLayout linearDriver;
-    CircleImageView imageProfile;
-    TextView tvName;
-    TextView tvRating;
-    CircleImageView imgVehicle;
-    TextView tvVehicleName;
-    TextView tvVehicleNumber;
-    TextView tvVehicleColor;
     PlaceHolderView placeHolderRiders;
-    LinearLayout linearRiders;
-    TextView tvAmountType;
-    TextView tvInstruction;
-    TextView tvLabelInstruction;
-    ImageView imgBack;
-    TextView tvTakenSeats;
-
-    TextView lalebResn;
-    TextView tvCancelResn;
     ModelTakenRideDetails rideDetails;
     ProgressDialog progressDialog;
     String cancelReasonId = "null";
@@ -82,11 +55,14 @@ public class PastTakenRideDetailsActivity extends AppCompatActivity implements A
 
     String from;
 
+    ActivityPastTakenRideDetailsBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_past_taken_ride_details);
-        ButterKnife.bind(this);
+        binding = ActivityPastTakenRideDetailsBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
         manager = new ApiManager(this, this);
         sessionManager = new SessionManager(this);
         progressDialog = new ProgressDialog(this);
@@ -109,19 +85,19 @@ public class PastTakenRideDetailsActivity extends AppCompatActivity implements A
             rideDetails = SingletonGson.getInstance().fromJson(getIntent().getStringExtra("script"), ModelTakenRideDetails.class);
             setData();
         }
-        imgBack.setOnClickListener(new android.view.View.OnClickListener() {
+        binding.imgBack.setOnClickListener(new android.view.View.OnClickListener() {
             @Override
             public void onClick(android.view.View view) {
                 finish();
             }
         });
-        btnRating.setOnClickListener(new View.OnClickListener() {
+        binding.btnRating.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openDialogForRating(v);
             }
         });
-        btnReceipt.setOnClickListener(new View.OnClickListener() {
+        binding.btnReceipt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 view = v;
@@ -140,7 +116,7 @@ public class PastTakenRideDetailsActivity extends AppCompatActivity implements A
                 }
             }
         });
-        linearDriver.setOnClickListener(new View.OnClickListener() {
+        binding.linearDriver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 //                try {
@@ -231,72 +207,72 @@ public class PastTakenRideDetailsActivity extends AppCompatActivity implements A
             if(rideDetails.getData().get(0).getTaken_ride_details().getRide_status().equals("7")
                     || rideDetails.getData().get(0).getTaken_ride_details().getRide_status().equals("8")
                     || rideDetails.getData().get(0).getTaken_ride_details().getRide_status().equals("9")){
-                btnReceipt.setVisibility(View.GONE);
+                binding.btnReceipt.setVisibility(View.GONE);
             }else {
-                btnReceipt.setVisibility(View.VISIBLE);
+                binding.btnReceipt.setVisibility(View.VISIBLE);
             }
-            tvTakenSeats.setText(""+rideDetails.getData().get(0).getTaken_ride_details().getBooked_seat());
-            tvDate.setText(AppUtils.getDateTimeInDayFormat("" + rideDetails.getData().get(0).getTaken_ride_details().getRide_time()));
-            tvAmt.setText(""+rideDetails.getData().get(0).getTaken_ride_details().getRide_amount());
+            binding.tvTakenSeats.setText(""+rideDetails.getData().get(0).getTaken_ride_details().getBooked_seat());
+            binding.tvDt.setText(AppUtils.getDateTimeInDayFormat("" + rideDetails.getData().get(0).getTaken_ride_details().getRide_time()));
+            binding.tvAmt.setText(""+rideDetails.getData().get(0).getTaken_ride_details().getRide_amount());
             if(rideDetails.getData().get(0).getTaken_ride_details().getPayment_status() == 1){
-                tvAmountType.setText(getResources().getString(R.string.wallet));
+                binding.tvAmountType.setText(getResources().getString(R.string.wallet));
             }else if(rideDetails.getData().get(0).getTaken_ride_details().getPayment_status() == 3){
-                tvAmountType.setText(getResources().getString(R.string.wallet_at_pickup));
+                binding.tvAmountType.setText(getResources().getString(R.string.wallet_at_pickup));
             }else{
-                tvAmountType.setText(getResources().getString(R.string.cash));
+                binding.tvAmountType.setText(getResources().getString(R.string.cash));
             }
             if(rideDetails.getData().get(0).getTaken_ride_details().getCancel_reason() == null){
-                tvCancelResn.setVisibility(View.GONE);
-                lalebResn.setVisibility(View.GONE);
+                binding.tvCancelReason.setVisibility(View.GONE);
+                binding.tvLabelReason.setVisibility(View.GONE);
             }else {
-                tvCancelResn.setText(rideDetails.getData().get(0).getTaken_ride_details().getCancel_reason());
+                binding.tvCancelReason.setText(rideDetails.getData().get(0).getTaken_ride_details().getCancel_reason());
             }
             if(rideDetails.getData().get(0).getTaken_ride_details().getRide_status().equals("5")
                     || rideDetails.getData().get(0).getTaken_ride_details().getRide_status().equals("6")){
-                btnRating.setVisibility(View.GONE);
+                binding.btnRating.setVisibility(View.GONE);
             }else {
                 if (rideDetails.getData().get(0).getTaken_ride_details().isIs_user_rated()) {
-                    btnRating.setVisibility(View.GONE);
+                    binding.btnRating.setVisibility(View.GONE);
                 } else {
                     if(rideDetails.getData().get(0).getTaken_ride_details().getRide_status().equals("7")
                             || rideDetails.getData().get(0).getTaken_ride_details().getRide_status().equals("8")
                             || rideDetails.getData().get(0).getTaken_ride_details().getRide_status().equals("9")){
-                        btnRating.setVisibility(View.GONE);
+                        binding.btnRating.setVisibility(View.GONE);
                     }else {
-                        btnRating.setVisibility(View.VISIBLE);
+                        binding.btnRating.setVisibility(View.VISIBLE);
                     }
                 }
             }
             if(rideDetails.getData().get(0).getTaken_ride_details().getInstructions() != null){
                 if(!rideDetails.getData().get(0).getTaken_ride_details().getInstructions().equals("")) {
-                    tvLabelInstruction.setVisibility(View.VISIBLE);
-                    tvInstruction.setVisibility(View.VISIBLE);
-                    tvInstruction.setText(rideDetails.getData().get(0).getTaken_ride_details().getInstructions());
+                    binding.tvLabelInstruction.setVisibility(View.VISIBLE);
+                    binding.tvInstruction.setVisibility(View.VISIBLE);
+                    binding.tvInstruction.setText(rideDetails.getData().get(0).getTaken_ride_details().getInstructions());
                 }else {
-                    tvLabelInstruction.setVisibility(View.GONE);
-                    tvInstruction.setVisibility(View.GONE);
+                    binding.tvLabelInstruction.setVisibility(View.GONE);
+                    binding.tvInstruction.setVisibility(View.GONE);
                 }
             }else {
-                tvLabelInstruction.setVisibility(View.GONE);
-                tvInstruction.setVisibility(View.GONE);
+                binding.tvLabelInstruction.setVisibility(View.GONE);
+                binding.tvInstruction.setVisibility(View.GONE);
             }
             if(rideDetails.getData().get(0).getTaken_ride_details().getAc_ride().equals("1")){
-                linearAc.setVisibility(View.VISIBLE);
+                binding.linearAc.setVisibility(View.VISIBLE);
             }else {
-                linearAc.setVisibility(View.GONE);
+                binding.linearAc.setVisibility(View.GONE);
             }
-            tvStartTime.setText(AppUtils.getTimeViaTimestamp(rideDetails.getData().get(0).getTaken_ride_details().getRide_time()));
-            tvEndTime.setText(AppUtils.getTimeViaTimestamp(rideDetails.getData().get(0).getTaken_ride_details().getEnd_ride_time()));
-            tvFrom.setText(rideDetails.getData().get(0).getTaken_ride_details().getPickup_location());
-            tvTo.setText(rideDetails.getData().get(0).getTaken_ride_details().getDrop_location());
-            Glide.with(this).load(rideDetails.getData().get(0).getOffer_user_detail().getImage()).into(imageProfile);
-            tvName.setText(rideDetails.getData().get(0).getOffer_user_detail().getName());
-            Glide.with(this).load(rideDetails.getData().get(0).getTake_vehicle_details().getVehicle_image()).into(imgVehicle);
-            tvVehicleName.setText(rideDetails.getData().get(0).getTake_vehicle_details().getVehicle_type_name());
-            tvVehicleColor.setText(rideDetails.getData().get(0).getTake_vehicle_details().getVehicle_color());
-            tvVehicleNumber.setText(rideDetails.getData().get(0).getTake_vehicle_details().getVehicle_number());
+            binding.tvStartTime.setText(AppUtils.getTimeViaTimestamp(rideDetails.getData().get(0).getTaken_ride_details().getRide_time()));
+            binding.tvEndTime.setText(AppUtils.getTimeViaTimestamp(rideDetails.getData().get(0).getTaken_ride_details().getEnd_ride_time()));
+            binding.tvFrom.setText(rideDetails.getData().get(0).getTaken_ride_details().getPickup_location());
+            binding.tvTo.setText(rideDetails.getData().get(0).getTaken_ride_details().getDrop_location());
+            Glide.with(this).load(rideDetails.getData().get(0).getOffer_user_detail().getImage()).into(binding.imgProfile);
+            binding.tvName.setText(rideDetails.getData().get(0).getOffer_user_detail().getName());
+            Glide.with(this).load(rideDetails.getData().get(0).getTake_vehicle_details().getVehicle_image()).into(binding.imgVehicle);
+            binding.tvVehicleName.setText(rideDetails.getData().get(0).getTake_vehicle_details().getVehicle_type_name());
+            binding.tvVehicleColor.setText(rideDetails.getData().get(0).getTake_vehicle_details().getVehicle_color());
+            binding.tvVehicleNumber.setText(rideDetails.getData().get(0).getTake_vehicle_details().getVehicle_number());
             if (rideDetails.getData().get(0).getAccept_users().size() != 0) {
-                linearRiders.setVisibility(android.view.View.VISIBLE);
+                binding.linearRiders.setVisibility(android.view.View.VISIBLE);
                 for (int i = 0; i < rideDetails.getData().get(0).getAccept_users().size(); i++) {
                     placeHolderRiders.addView(new HolderRiders(rideDetails.getData().get(0).getAccept_users().get(i)));
                 }
@@ -375,17 +351,17 @@ public class PastTakenRideDetailsActivity extends AppCompatActivity implements A
             if(rideDetails.getData().get(0).getTaken_ride_details().getRide_status().equals("5")
                     || rideDetails.getData().get(0).getTaken_ride_details().getRide_status().equals("6")
                     || rideDetails.getData().get(0).getTaken_ride_details().getRide_status().equals("9")){
-                btnRating.setVisibility(View.GONE);
+                binding.btnRating.setVisibility(View.GONE);
             }else {
                 if (rideDetails.getData().get(0).getTaken_ride_details().isIs_user_rated()) {
-                    btnRating.setVisibility(View.GONE);
+                    binding.btnRating.setVisibility(View.GONE);
                 } else {
                     if(rideDetails.getData().get(0).getTaken_ride_details().getRide_status().equals("7")
                             || rideDetails.getData().get(0).getTaken_ride_details().getRide_status().equals("8")
                             || rideDetails.getData().get(0).getTaken_ride_details().getRide_status().equals("9")){
-                        btnRating.setVisibility(View.GONE);
+                        binding.btnRating.setVisibility(View.GONE);
                     }else {
-                        btnRating.setVisibility(View.VISIBLE);
+                        binding.btnRating.setVisibility(View.VISIBLE);
                     }
                 }
             }

@@ -27,7 +27,6 @@ import java.util.HashMap;
 import java.util.List;
 
 
-import butterknife.ButterKnife;
 
 public class BankAccountActivity extends AppCompatActivity implements ApiManager.APIFETCHER {
 

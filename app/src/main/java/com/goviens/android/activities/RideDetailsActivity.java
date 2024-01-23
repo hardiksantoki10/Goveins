@@ -28,6 +28,8 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.goviens.android.R;
+import com.goviens.android.databinding.ActivityRideDetailsBinding;
+import com.goviens.android.databinding.ActivitySignUpBinding;
 import com.goviens.android.models.ModelProfileDetails;
 import com.goviens.android.models.ModelRideDetails;
 import com.goviens.android.models.ModelStartRide;
@@ -46,7 +48,6 @@ import com.mindorks.placeholderview.annotations.View;
 import java.util.HashMap;
 
 
-import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class RideDetailsActivity extends AppCompatActivity implements ApiManager.APIFETCHER, TextWatcher {
@@ -57,25 +58,11 @@ public class RideDetailsActivity extends AppCompatActivity implements ApiManager
     SessionManager sessionManager;
     PlaceHolderView placeHolderRequest;
     PlaceHolderView placeHolderRide;
-    LinearLayout linearFemale;
-    LinearLayout linearAc;
-    TextView tvDate;
-    TextView tvAmt;
-    Button btnStartRide;
-    Button btnCancel;
-    ImageView imgBack;
-    TextView tvRequest;
     android.view.View viewRequest;
 
-    TextView tvAvailableSeats;
 
-    TextView tvChargePerSeat;
-    TextView tvTotalSeats;
-    LinearLayout linearRiders;
     PlaceHolderView placeHolderRiders;
 
-    TextView tvInstruction;
-    TextView tvLabelInstruction;
 
     String cancelReasonId = "null";
 
@@ -84,8 +71,6 @@ public class RideDetailsActivity extends AppCompatActivity implements ApiManager
     ModelRideDetails rideDetails;
     ProgressDialog progressDialog;
     PlaceHolderView placeholder_cancel_reason;
-    RadioButton radioOther;
-    EditText etOtherReason;
 
     String other_reason = "";
     String from;//0 for upcoming 1 for ongoing
@@ -94,26 +79,34 @@ public class RideDetailsActivity extends AppCompatActivity implements ApiManager
     public static final int LOCATION_PERMISSION_REQUEST_CODE = 858;
     String rider = "0";
 
+    ActivityRideDetailsBinding binding;
+
+    RadioButton radioOther;
+    EditText etOtherReason;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ride_details);
-        ButterKnife.bind(this);
+
+        binding = ActivityRideDetailsBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+
         manager = new ApiManager(this, this);
         sessionManager = new SessionManager(this);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         RIDE_ID = getIntent().getStringExtra("ride_id");
         from = getIntent().getStringExtra("from"); //0 for upcoming 1 for ongoing
         if (from.equals("0")) {
-            btnStartRide.setText(getResources().getString(R.string.start_ride));
+            binding.btnStartRide.setText(getResources().getString(R.string.start_ride));
         } else {
-            btnStartRide.setText(getResources().getString(R.string.continue_ride));
-            btnCancel.setVisibility(android.view.View.GONE);
+            binding.btnStartRide.setText(getResources().getString(R.string.continue_ride));
+            binding.btnCancel.setVisibility(android.view.View.GONE);
         }
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage(this.getResources().getString(R.string.loading));
         progressDialog.setCancelable(false);
-        btnStartRide.setOnClickListener(new android.view.View.OnClickListener() {
+        binding.btnStartRide.setOnClickListener(new android.view.View.OnClickListener() {
             @Override
             public void onClick(android.view.View v) {
                 if (from.equals("0")) {
@@ -147,13 +140,13 @@ public class RideDetailsActivity extends AppCompatActivity implements ApiManager
 
 
 
-        imgBack.setOnClickListener(new android.view.View.OnClickListener() {
+        binding.imgBack.setOnClickListener(new android.view.View.OnClickListener() {
             @Override
             public void onClick(android.view.View view) {
                 finish();
             }
         });
-        btnCancel.setOnClickListener(new android.view.View.OnClickListener() {
+        binding.btnCancel.setOnClickListener(new android.view.View.OnClickListener() {
             @Override
             public void onClick(android.view.View view) {
 //                AlertDialog.Builder builderSingle = new AlertDialog.Builder(RideDetailsActivity.this);
@@ -401,49 +394,49 @@ public class RideDetailsActivity extends AppCompatActivity implements ApiManager
                     if (rideDetails.getResult().equals("1")) {
                         if(rideDetails.getData().getInstructions() != null){
                             if(!rideDetails.getData().getInstructions().equals("")) {
-                                tvLabelInstruction.setVisibility(android.view.View.VISIBLE);
-                                tvInstruction.setVisibility(android.view.View.VISIBLE);
-                                tvInstruction.setText(rideDetails.getData().getInstructions());
+                                binding.tvLabelInstruction.setVisibility(android.view.View.VISIBLE);
+                                binding.tvInstruction.setVisibility(android.view.View.VISIBLE);
+                                binding.tvInstruction.setText(rideDetails.getData().getInstructions());
                             }else {
-                                tvLabelInstruction.setVisibility(android.view.View.GONE);
-                                tvInstruction.setVisibility(android.view.View.GONE);
+                                binding.tvLabelInstruction.setVisibility(android.view.View.GONE);
+                                binding.tvInstruction.setVisibility(android.view.View.GONE);
                             }
                         }else {
-                            tvLabelInstruction.setVisibility(android.view.View.GONE);
-                            tvInstruction.setVisibility(android.view.View.GONE);
+                            binding.tvLabelInstruction.setVisibility(android.view.View.GONE);
+                            binding.tvInstruction.setVisibility(android.view.View.GONE);
                         }
-                        tvAvailableSeats.setText(""+rideDetails.getData().getAvailable_seats());
-                        tvTotalSeats.setText(""+rideDetails.getData().getTotal_seats());
-                        tvChargePerSeat.setText(""+rideDetails.getData().getPer_seat_charge());
+                        binding.tvAvailableSeats.setText(""+rideDetails.getData().getAvailable_seats());
+                        binding.tvTotalSeats.setText(""+rideDetails.getData().getTotal_seats());
+                        binding.tvChargePerSeat.setText(""+rideDetails.getData().getPer_seat_charge());
                         if (rideDetails.getData().getRequest_users().size() != 0) {
                             placeHolderRequest.setVisibility(android.view.View.VISIBLE);
-                            tvRequest.setVisibility(android.view.View.VISIBLE);
+                            binding.tvRequest.setVisibility(android.view.View.VISIBLE);
                             viewRequest.setVisibility(android.view.View.VISIBLE);
                             for (int i = 0; i < rideDetails.getData().getRequest_users().size(); i++) {
                                 placeHolderRequest.addView(new HolderRequest(rideDetails.getData().getRequest_users().get(i)));
                             }
                         } else {
-                            tvRequest.setVisibility(android.view.View.GONE);
+                            binding.tvRequest.setVisibility(android.view.View.GONE);
                             viewRequest.setVisibility(android.view.View.GONE);
                             placeHolderRequest.setVisibility(android.view.View.GONE);
                         }
                         if (rideDetails.getData().getAccept_users().size() != 0) {
-                            linearRiders.setVisibility(android.view.View.VISIBLE);
+                            binding.linearRiders.setVisibility(android.view.View.VISIBLE);
                             for (int i = 0; i < rideDetails.getData().getAccept_users().size(); i++) {
                                 placeHolderRiders.addView(new HolderRiders(rideDetails.getData().getAccept_users().get(i)));
                             }
                         }
-                        tvDate.setText(AppUtils.getDateTimeInDayFormat(rideDetails.getData().getRide_timestamp()));
-                        tvAmt.setText(rideDetails.getData().getTotal_amount());
+                        binding.tvDt.setText(AppUtils.getDateTimeInDayFormat(rideDetails.getData().getRide_timestamp()));
+                        binding.tvAmt.setText(rideDetails.getData().getTotal_amount());
                         if (rideDetails.getData().isAc_ride()) {
-                            linearAc.setVisibility(android.view.View.VISIBLE);
+                            binding.linearAc.setVisibility(android.view.View.VISIBLE);
                         } else {
-                            linearAc.setVisibility(android.view.View.GONE);
+                            binding.linearAc.setVisibility(android.view.View.GONE);
                         }
                         if (rideDetails.getData().isOnly_females()) {
-                            linearFemale.setVisibility(android.view.View.VISIBLE);
+                            binding.linearFemale.setVisibility(android.view.View.VISIBLE);
                         } else {
-                            linearFemale.setVisibility(android.view.View.GONE);
+                            binding.linearFemale.setVisibility(android.view.View.GONE);
                         }
                         for (int i = 0; i < rideDetails.getData().getRide_details_list().size(); i++) {
                             if (i == rideDetails.getData().getRide_details_list().size() - 1) {
